@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3 uid="uid://dy2qkopq3iwef"]
+
+[ext_resource type="Script" uid="uid://btmiahx8gojy2" path="res://scenes/inspector/message.gd" id="1_w3fd0"]
+
+[node name="Message" type="PanelContainer"]
+process_mode = 3
+modulate = Color(1, 1, 1, 0)
+anchors_preset = -1
+anchor_left = 0.389757
+anchor_top = 0.299383
+anchor_right = 0.607639
+anchor_bottom = 0.774691
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w3fd0")
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+
+[node name="Continue" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "CONTINUE"
