@@ -1,0 +1,11 @@
+Model Information:
+* title:	Electronic Scale
+* source:	https://sketchfab.com/3d-models/electronic-scale-d89b9877ba3a436ebed68ab17106ed50
+* author:	BlackRockbinxon (https://sketchfab.com/robinsoncasadiegos)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Electronic Scale" (https://sketchfab.com/3d-models/electronic-scale-d89b9877ba3a436ebed68ab17106ed50) by BlackRockbinxon (https://sketchfab.com/robinsoncasadiegos) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
