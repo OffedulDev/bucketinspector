@@ -30,7 +30,16 @@ metadata/_custom_type_script = "uid://d0gtw3p0bx0hg"
 
 [sub_resource type="Resource" id="Resource_w3kyl"]
 script = ExtResource("1_hmcm0")
-text = ""
+text = "[font_size=32]Be aware![/font_size]
+Hey Inspector! Sorry to bother you again but something really important just came to
+my ears. [b]Outsiders[/b] are now using [color=yellow]special coloring agents[/color] to alter
+the color of some [color=red]illegal liquids[/color], for this task the king has [i]kindly provided
+you with some fancy new tools[/i]. If you look to your left ([i]A[/i]) you can see a new desk.
+The [color=yellow]shiny new cup[/color] has been found in an old temple and is
+able to [color=pink]always find out the real content of the bucket[/color] but
+[b]BE CAREFUL![/b] because it get's tired easily...
+
+You can check if the content color matches the correct one by looking at your updated [b][color=teal]Rulebook[/color][/b] by pressing [b]R[/b]."
 metadata/_custom_type_script = "uid://d0gtw3p0bx0hg"
 
 [resource]

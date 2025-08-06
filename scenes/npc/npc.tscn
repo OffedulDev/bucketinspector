@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=4 uid="uid://c3ijdc618puwx"]
+[gd_scene load_steps=31 format=4 uid="uid://c3ijdc618puwx"]
 
 [ext_resource type="Texture2D" uid="uid://c0j6hrsl75dmv" path="res://scenes/npc/passport_0.png" id="1_3i1kj"]
 [ext_resource type="Texture2D" uid="uid://cmnwqauvf6wvm" path="res://scenes/npc/wooden_bucket/textures/FloorExtension_1_VarA_LOD0_FloorExtension_1_VarA_mdl_mso_baseColor.png" id="1_ldo70"]
@@ -122,6 +122,9 @@ shader_parameter/disp = Vector2(0, 0)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_ay68w"]
 viewport_path = NodePath("Npc/Bucket/Explosion/SubViewport")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ay68w"]
+size = Vector3(0.419775, 0.199463, 0.304516)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fv57t"]
 resource_name = "front"
@@ -271,7 +274,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_gfcum")
 skeleton = NodePath("../..")
 
-[node name="Bucket" type="Node3D" parent="Npc"]
+[node name="Bucket" type="Area3D" parent="Npc"]
 transform = Transform3D(0.67, 0, 0, 0, 0.67, 0, 0, 0, 0.67, 0.240502, 0.738155, -0.674445)
 
 [node name="Model" type="MeshInstance3D" parent="Npc/Bucket"]
@@ -345,6 +348,10 @@ texture = SubResource("ViewportTexture_ay68w")
 [node name="Sprite3D10" type="Sprite3D" parent="Npc/Bucket/Explosion"]
 transform = Transform3D(-0.149893, 0, 0.116756, 0, 0.19, 0, -0.116756, 0, -0.149893, 0, 0.626435, 0)
 texture = SubResource("ViewportTexture_ay68w")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Npc/Bucket"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0904343, 0.476994, -0.039461)
+shape = SubResource("BoxShape3D_ay68w")
 
 [node name="Passport" type="Area3D" parent="Npc"]
 transform = Transform3D(0.215, 0, 0, 0, 0.215, 0, 0, 0, 0.215, -0.473584, 1, -0.501686)

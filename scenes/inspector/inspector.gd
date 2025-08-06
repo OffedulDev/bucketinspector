@@ -85,6 +85,7 @@ var moved_items = false
 @onready var day_handler = get_parent().get_node("Day")
 @onready var passport_view: Node3D = get_parent().get_node("PassportView")
 @onready var normal_view: Node3D = get_parent().get_node("NormalView")
+@onready var bucket_view: Node3D = get_parent().get_node("BucketView")
 @onready var lab_view: Node3D = get_parent().get_node("LabView")
 @onready var scale_object: Area3D = get_node("Scale")
 @onready var scale_view: Node3D = get_parent().get_node("ScaleView")
@@ -132,6 +133,10 @@ func focus_passport() -> void:
 	var tween: Tween = get_tree().create_tween()
 	tween.tween_property(camera, "global_transform", passport_view.global_transform, 0.5)
 
+func focus_bucket() -> void:
+	var tween: Tween = get_tree().create_tween()
+	tween.tween_property(camera, "global_transform", bucket_view.global_transform, 0.5)
+
 func unfocus() -> void:
 	var tween: Tween = get_tree().create_tween()
 	tween.tween_property(camera, "global_transform", normal_view.global_transform, 0.5)
@@ -158,7 +163,7 @@ func set_scale_label():
 
 func move_items_to_stand() -> void:
 	if moved_items == true: return
-	var bucket: Node3D = current_npc.get_node("Npc").get_node("Bucket")
+	var bucket: Area3D = current_npc.get_node("Npc").get_node("Bucket")
 	var passport: Area3D = current_npc.get_node("Npc").get_node("Passport")
 	moved_items = true
 
@@ -175,6 +180,9 @@ func move_items_to_stand() -> void:
 	
 	passport.mouse_entered.connect(focus_passport)
 	passport.mouse_exited.connect(unfocus)
+	bucket.mouse_entered.connect(focus_bucket)
+	bucket.mouse_exited.connect(unfocus)
+	
 	if terrorist_spawned:
 		get_tree().create_timer(3).timeout.connect(_act_terrorist)
 
@@ -196,7 +204,7 @@ func spawn_npc() -> void:
 		current_npc_information["errors"].append("kingdom")
 		
 	var content_legal = randf() > 0.45
-	var bucket: Node3D = npc.get_node("Npc/Bucket")
+	var bucket: Area3D = npc.get_node("Npc/Bucket")
 	var content_model: MeshInstance3D = bucket.get_node("Content")
 	var material: StandardMaterial3D = StandardMaterial3D.new()
 	var fake_content
@@ -264,7 +272,7 @@ func spawn_npc() -> void:
 @onready var stamp_point = get_node("StampPoint")
 
 func give_items_back() -> Tween:
-	var bucket: Node3D = current_npc.get_node("Npc").get_node("Bucket")
+	var bucket: Area3D = current_npc.get_node("Npc").get_node("Bucket")
 	var passport: Area3D = current_npc.get_node("Npc").get_node("Passport")
 	moved_items = false
 	
@@ -367,7 +375,7 @@ func prompt_message(text: String) -> Signal:
 	return message.on_continue
 	
 func _on_day_day_started() -> void:
-	if day_handler.day == 0:
+	if day_handler.day >= 0:
 		rulebook_tab.set_tab_hidden(
 			rulebook_tab.get_tab_idx_from_control(rulebook_tab.get_node("Weight Restrictions")), 
 			true
@@ -377,27 +385,32 @@ func _on_day_day_started() -> void:
 			true
 		)
 		
-		get_tree().create_timer(2).timeout.connect(
-			prompt_message.bind(messages.messages["intro"].text)
-		)
-	elif day_handler.day == 1:
+		if day_handler.day == 0:
+			get_tree().create_timer(2).timeout.connect(
+				prompt_message.bind(messages.messages["intro"].text)
+			)
+	if day_handler.day >= 1:
 		var idx = rulebook_tab.get_tab_idx_from_control(rulebook_tab.get_node("Weight Restrictions"))
 		rulebook_tab.set_tab_hidden(idx, false)
 		
 		scale_object.visible = true
 		bucket_point.position = Vector3(-0.981, 0.954, -0.393)
-		get_tree().create_timer(2).timeout.connect(
-			prompt_message.bind(messages.messages["day1"].text)
-		)
-	elif day_handler.day == 2:
+		
+		if day_handler.day == 1:
+			get_tree().create_timer(2).timeout.connect(
+				prompt_message.bind(messages.messages["day1"].text)
+			)
+	if day_handler.day >= 2:
 		get_parent().get_node("LabDesk").visible = true
 		get_node("MagicCup").visible = true
 		
 		var idx = rulebook_tab.get_tab_idx_from_control(rulebook_tab.get_node("Fake Liquids"))
 		rulebook_tab.set_tab_hidden(idx, false)
-		get_tree().create_timer(2).timeout.connect(
-			prompt_message.bind(messages.messages["day2"].text)
-		)
+		
+		if day_handler.day == 2:
+			get_tree().create_timer(2).timeout.connect(
+				prompt_message.bind(messages.messages["day2"].text)
+			)
 	
 	if current_npc:
 		current_npc.queue_free()
@@ -414,7 +427,7 @@ func _play_sfx(stream: AudioStream):
 	sound.finished.connect(sound.queue_free)
 
 func _act_terrorist() -> void:
-	var bucket: Node3D = current_npc.get_node("Npc/Bucket")
+	var bucket: Area3D = current_npc.get_node("Npc/Bucket")
 	var particles: GPUParticles3D = bucket.get_node("GPUParticles3D")
 	var explosion: Node3D = bucket.get_node("Explosion")
 	
