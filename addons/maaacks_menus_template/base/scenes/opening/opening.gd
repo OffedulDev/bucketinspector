@@ -24,5 +24,9 @@ func _load_next_scene() -> void:
 func _ready() -> void:
 	SceneLoader.load_scene(next_scene, true)	
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_accept"):
+		_load_next_scene()
+
 func _on_video_stream_player_finished() -> void:
 	_load_next_scene()

@@ -15,3 +15,7 @@ func _unhandled_input(event : InputEvent) -> void:
 		await current_menu.tree_exited
 		if is_inside_tree() and _initial_focus_control:
 			_initial_focus_control.grab_focus()
+
+
+func _on_magic_cup_mouse_entered() -> void:
+	pass # Replace with function body.

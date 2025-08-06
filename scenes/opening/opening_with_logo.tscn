@@ -8,3 +8,4 @@
 script = ExtResource("2_nk1kj")
 next_scene = "res://scenes/menus/main_menu/main_menu_with_animations.tscn"
 images = Array[Texture2D]([ExtResource("3_i1ftt")])
+metadata/_edit_use_anchors_ = true

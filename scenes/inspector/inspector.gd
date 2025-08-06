@@ -25,7 +25,7 @@ const LIQUIDS: Dictionary[StringName, Dictionary] = {
 	},
 	"Brightale": {
 		"max": 120,
-		"color": Color("#84cf8f")
+		"color": Color("#92c3d4")
 	},
 	"Dewdrop": {
 		"max": 75,
@@ -75,6 +75,7 @@ const FAKE_KINGDOMS: Array[StringName] = [
 
 var current_npc: PathFollow3D = null
 var current_npc_information: Dictionary = {}
+var terrorist_spawned = false
 var moved_items = false
 @export var messages: Messages
 @onready var rulebook = get_parent().get_node("Rulebook")
@@ -84,6 +85,7 @@ var moved_items = false
 @onready var day_handler = get_parent().get_node("Day")
 @onready var passport_view: Node3D = get_parent().get_node("PassportView")
 @onready var normal_view: Node3D = get_parent().get_node("NormalView")
+@onready var lab_view: Node3D = get_parent().get_node("LabView")
 @onready var scale_object: Area3D = get_node("Scale")
 @onready var scale_view: Node3D = get_parent().get_node("ScaleView")
 @onready var bucket_point: Node3D = get_node("BucketPoint")
@@ -115,7 +117,13 @@ func _unhandled_input(event: InputEvent) -> void:
 				move_items_to_stand()
 	elif event.is_action_pressed("rulebook"):
 		rulebook.visible = not rulebook.visible
-
+	elif event.is_action_pressed("look_left"):
+		if day_handler.day > 1:
+			var tween: Tween = get_tree().create_tween()
+			tween.tween_property(camera, "global_transform", lab_view.global_transform, 0.5)
+	elif event.is_action_pressed("look_right"):
+		unfocus()
+		
 func focus_scale() -> void:
 	var tween: Tween = get_tree().create_tween()
 	tween.tween_property(camera, "global_transform", scale_view.global_transform, 0.5)
@@ -132,6 +140,15 @@ func _ready() -> void:
 	randomize()
 	scale_object.mouse_entered.connect(focus_scale)
 	scale_object.mouse_exited.connect(unfocus)
+	
+	# Initialize UI colors
+	for liquid in LIQUIDS.keys():
+		var template = rulebook_tab.get_node("Fake Liquids/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/Template").duplicate()
+		template.get_node("Label").text = liquid
+		template.get_node("ColorRect").color = LIQUIDS[liquid]["color"]
+		template.visible = true
+		
+		rulebook_tab.get_node("Fake Liquids/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/").add_child(template)
 	
 	_on_day_day_started()
 
@@ -158,7 +175,7 @@ func move_items_to_stand() -> void:
 	
 	passport.mouse_entered.connect(focus_passport)
 	passport.mouse_exited.connect(unfocus)
-	if day_handler.current_time > 15 and day_handler.day == 0:
+	if terrorist_spawned:
 		get_tree().create_timer(3).timeout.connect(_act_terrorist)
 
 func spawn_npc() -> void:	
@@ -182,16 +199,35 @@ func spawn_npc() -> void:
 	var bucket: Node3D = npc.get_node("Npc/Bucket")
 	var content_model: MeshInstance3D = bucket.get_node("Content")
 	var material: StandardMaterial3D = StandardMaterial3D.new()
+	var fake_content
 	if content_legal:
 		current_npc_information["content"] = LIQUIDS.keys().pick_random()
 		material.albedo_color = LIQUIDS[current_npc_information["content"]]["color"]
 	else:
-		current_npc_information["content"] = ILLEGAL_LIQUIDS.pick_random()
+		fake_content = LIQUIDS.keys().pick_random() if (randf() > 0.3 and day_handler.day > 1) else null
+		var color_faked = randi() > 0.2
+		if fake_content:
+			current_npc_information["real_content"] = ILLEGAL_LIQUIDS.pick_random()
+			current_npc_information["content"] = fake_content
+			
+			var real_color = LIQUIDS[current_npc_information["content"]]["color"]
+			if color_faked:
+				material.albedo_color = Color(
+					randf_range(real_color.r-0.2, real_color.r+0.2), 
+					randf_range(real_color.g-0.2, real_color.g+0.2), 
+					randf_range(real_color.b-0.2, real_color.b+0.2)
+				)
+				print("color was faked")
+		else:
+			current_npc_information["content"] = ILLEGAL_LIQUIDS.pick_random()
+		
+		if not color_faked:
+			material.albedo_color = Color(randf(), randf(), randf())
+			
 		current_npc_information["errors"].append("content")
-		material.albedo_color = Color(randf(), randf(), randf())
 	
 	content_model.mesh.surface_set_material(0, material)
-	var weight_legal = randi() > 0.45
+	var weight_legal = randi() > 0.45 or fake_content
 	if weight_legal and content_legal:
 		current_npc_information["content_weight"] = randi_range(LIQUIDS[current_npc_information["content"]]["max"]-50, LIQUIDS[current_npc_information["content"]]["max"])
 	else:
@@ -212,8 +248,9 @@ func spawn_npc() -> void:
 	var passport_bottom: MeshInstance3D = passport.get_node("Bottom")
 	passport_bottom.get_node("Name").text = current_npc_information["name"]
 	passport_bottom.get_node("Surname").text = current_npc_information["surname"]
+	passport_bottom.get_node("Age").text = str(randi_range(10, 30))
 	passport_bottom.get_node("Kingdom").text = current_npc_information["kingdom"]
-	passport_bottom.get_node("Content").text = current_npc_information["content"]
+	passport_bottom.get_node("Content").text = current_npc_information["content"] if not fake_content else fake_content
 
 	var tween: Tween = get_tree().create_tween()
 	tween.tween_property(npc, "progress_ratio", 0.5, 1)
@@ -249,7 +286,7 @@ func give_items_back() -> Tween:
 	return tween
 	
 func approve_npc() -> void:
-	if day_handler.current_time > 15 and day_handler.day == 0:
+	if terrorist_spawned:
 		return
 		
 	if moved_items == false: 
@@ -282,7 +319,7 @@ func approve_npc() -> void:
 	current_npc = null
 	
 func deny_npc() -> void:
-	if day_handler.current_time > 15 and day_handler.day == 0:
+	if terrorist_spawned:
 		return
 	if moved_items == false: 
 		deny_stamp.block = false
@@ -331,16 +368,33 @@ func prompt_message(text: String) -> Signal:
 	
 func _on_day_day_started() -> void:
 	if day_handler.day == 0:
-		var idx = rulebook_tab.get_tab_idx_from_control(rulebook_tab.get_node("Weight Restrictions"))
-		rulebook_tab.set_tab_hidden(idx, true)
+		rulebook_tab.set_tab_hidden(
+			rulebook_tab.get_tab_idx_from_control(rulebook_tab.get_node("Weight Restrictions")), 
+			true
+		)
+		rulebook_tab.set_tab_hidden(
+			rulebook_tab.get_tab_idx_from_control(rulebook_tab.get_node("Fake Liquids")), 
+			true
+		)
+		
 		get_tree().create_timer(2).timeout.connect(
 			prompt_message.bind(messages.messages["intro"].text)
 		)
 	elif day_handler.day == 1:
 		var idx = rulebook_tab.get_tab_idx_from_control(rulebook_tab.get_node("Weight Restrictions"))
 		rulebook_tab.set_tab_hidden(idx, false)
+		
 		scale_object.visible = true
 		bucket_point.position = Vector3(-0.981, 0.954, -0.393)
+		get_tree().create_timer(2).timeout.connect(
+			prompt_message.bind(messages.messages["day1"].text)
+		)
+	elif day_handler.day == 2:
+		get_parent().get_node("LabDesk").visible = true
+		get_node("MagicCup").visible = true
+		
+		var idx = rulebook_tab.get_tab_idx_from_control(rulebook_tab.get_node("Fake Liquids"))
+		rulebook_tab.set_tab_hidden(idx, false)
 		get_tree().create_timer(2).timeout.connect(
 			prompt_message.bind(messages.messages["day2"].text)
 		)
@@ -349,6 +403,7 @@ func _on_day_day_started() -> void:
 		current_npc.queue_free()
 		current_npc = null
 		scale_object.get_node("Label").text = "0 st"
+		moved_items = false
 
 func _play_sfx(stream: AudioStream):
 	var sound: AudioStreamPlayer = AudioStreamPlayer.new()
@@ -378,6 +433,7 @@ func _act_terrorist() -> void:
 func _on_npc_wait_timeout() -> void:
 	if day_handler.current_time > 15:
 		day_handler.day_timer.paused = true
+		terrorist_spawned = true
 		spawn_npc()
 	else:
 		spawn_npc()

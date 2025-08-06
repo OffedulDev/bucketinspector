@@ -4,6 +4,7 @@ extends Control
 @onready var time_label: Label = get_node("Time")
 @onready var blocker_panel: PanelContainer = get_node("Panel")
 @onready var day_timer: Timer = get_node("DayCycle")
+const BASE_TIME = 360
 
 func round_to_dec(num, digit):
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)
@@ -24,7 +25,7 @@ func _process(delta: float) -> void:
 		print("JUMPED")
 		_accepted.emit()
 
-var day = 0
+var day = 2
 var today_earnings = 0
 signal day_started
 
@@ -40,7 +41,7 @@ func update_blocker() -> void:
 	balance.text = "€" + str(money)
 	
 
-func reset_day(bypass: bool) -> void:
+func reset_day(bypass: bool = false) -> void:
 	if process_mode == Node.PROCESS_MODE_DISABLED and bypass == false: return
 	if (get_parent().get_node("Inspector").current_npc != null) and bypass == false:
 		await get_parent().get_node("Inspector").current_npc == null
@@ -54,6 +55,7 @@ func reset_day(bypass: bool) -> void:
 	await _accepted
 	
 	day += 1
+	day_timer.wait_time = day*(BASE_TIME*(day/0.025))
 	day_label.text = "DAY " + str(day)
 	day_timer.start()
 	day_started.emit()
