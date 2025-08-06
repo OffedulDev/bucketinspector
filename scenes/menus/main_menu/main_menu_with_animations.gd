@@ -31,6 +31,10 @@ func _input(event : InputEvent) -> void:
 func _ready() -> void:
 	super._ready()
 	animation_state_machine = $MenuAnimationTree.get("parameters/playback")
-
+	
+	if SaveHandler.load_save() != null:
+		%ContinueGameButton.visible = true
+	
 func _on_continue_game_button_pressed() -> void:
+	SaveHandler.wants_to_load = true
 	load_game_scene()

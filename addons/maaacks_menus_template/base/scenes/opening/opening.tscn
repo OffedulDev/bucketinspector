@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://sikc02ddepyt"]
+[gd_scene load_steps=3 format=3 uid="uid://sikc02ddepyt"]
 
 [ext_resource type="Script" uid="uid://dtco0s8byckx6" path="res://addons/maaacks_menus_template/base/scenes/opening/opening.gd" id="1_fcjph"]
+[ext_resource type="VideoStream" uid="uid://chw88wgfsl5yw" path="res://resources/video.ogv" id="2_7mckj"]
 
 [node name="Opening" type="Control"]
 layout_mode = 3
@@ -17,11 +18,16 @@ process_mode = 3
 autoplay = true
 bus = &"Music"
 
-[node name="ImagesContainer" type="MarginContainer" parent="."]
-unique_name_in_owner = true
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+stream = ExtResource("2_7mckj")
+autoplay = true
+expand = true
+metadata/_edit_use_anchors_ = true
+
+[connection signal="finished" from="VideoStreamPlayer" to="." method="_on_video_stream_player_finished"]

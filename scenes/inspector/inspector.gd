@@ -1,6 +1,7 @@
 extends Node3D
 const NPC_SCENE = preload("res://scenes/npc/npc.tscn")
 const MESSAGE_SCENE = preload("res://scenes/inspector/message.tscn")
+const EXPLOSION_SFX = preload("res://resources/audio/sfx/explosion.mp3")
 const NAMES: Array[StringName] = [
 	"Aethelred", "Brynjolf", "Cassian", "Drystan", "Einar", "Gawain",
 	"Isolde", "Lyra", "Morwen", "Seraphina", "Thorne", "Valerius"
@@ -9,13 +10,31 @@ const SURNAMES: Array[StringName] = [
 	"Ashwood", "Blackwood", "Carroway", "Drakon", "Faewind", "Grimm",
 	"Ironhand", "Longshadow", "Oakheart", "Silverbane", "Stonebridge", "Winterfall"
 ]
-const LIQUIDS: Dictionary[StringName, int] = {
-	"Aetherium": 100,
-	"Sunpetal": 85,
-	"Glimmer": 95,
-	"Brightale": 120,
-	"Dewdrop": 75,
-	"Nectar": 90,
+const LIQUIDS: Dictionary[StringName, Dictionary] = {
+	"Aetherium": {
+		"max": 100,
+		"color": Color("#82b0a8")
+	},
+	"Sunpetal": {
+		"max": 85,
+		"color": Color("#c3cc8d")
+	},
+	"Glimmer": {
+		"max": 95,
+		"color": Color("#9e84cf")
+	},
+	"Brightale": {
+		"max": 120,
+		"color": Color("#84cf8f")
+	},
+	"Dewdrop": {
+		"max": 75,
+		"color": Color("#ad2638")
+	},
+	"Nectar": {
+		"max": 90,
+		"color": Color("#8bad26")
+	},
 }
 const ILLEGAL_LIQUIDS: Array[StringName] = [
 	"Shadowink",
@@ -71,11 +90,23 @@ var moved_items = false
 @onready var passport_point: Node3D = get_node("PassportPoint")
 @onready var rulebook_tab: TabContainer = rulebook.get_node("TabContainer")
 @onready var npc_wait_timer: Timer = get_node("NPCWait")
+@export var correct_fare: int = 0
+@export var wrong_fare: int = 0
+
+var decay = 0.8
+var max_offset = Vector2(0.5, 0.5)
+var max_roll = 0.1
+var shake_strength = 0
 
 func _process(delta: float) -> void:
 	if current_npc == null and npc_wait_timer.is_stopped():
 		npc_wait_timer.wait_time = randi_range(1, 4)
 		npc_wait_timer.start()
+		
+	var amount = pow(shake_strength, 2)
+	camera.rotation = Vector3(camera.rotation.x, camera.rotation.y, 0.1 * amount * randi_range(-1, 1))
+	camera.h_offset = max_offset.x * amount * randi_range(-1, 1)
+	camera.v_offset = max_offset.y * amount * randi_range(-1, 1)
 	
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action("pickup_bucket"):
@@ -109,6 +140,7 @@ func set_scale_label():
 	scale_object.get_node("Label").text = str(current_npc_information["content_weight"]) + " st"
 
 func move_items_to_stand() -> void:
+	if moved_items == true: return
 	var bucket: Node3D = current_npc.get_node("Npc").get_node("Bucket")
 	var passport: Area3D = current_npc.get_node("Npc").get_node("Passport")
 	moved_items = true
@@ -126,6 +158,8 @@ func move_items_to_stand() -> void:
 	
 	passport.mouse_entered.connect(focus_passport)
 	passport.mouse_exited.connect(unfocus)
+	if day_handler.current_time > 15 and day_handler.day == 0:
+		get_tree().create_timer(3).timeout.connect(_act_terrorist)
 
 func spawn_npc() -> void:	
 	var npc: PathFollow3D = NPC_SCENE.instantiate()
@@ -145,22 +179,34 @@ func spawn_npc() -> void:
 		current_npc_information["errors"].append("kingdom")
 		
 	var content_legal = randf() > 0.45
+	var bucket: Node3D = npc.get_node("Npc/Bucket")
+	var content_model: MeshInstance3D = bucket.get_node("Content")
+	var material: StandardMaterial3D = StandardMaterial3D.new()
 	if content_legal:
 		current_npc_information["content"] = LIQUIDS.keys().pick_random()
+		material.albedo_color = LIQUIDS[current_npc_information["content"]]["color"]
 	else:
 		current_npc_information["content"] = ILLEGAL_LIQUIDS.pick_random()
 		current_npc_information["errors"].append("content")
+		material.albedo_color = Color(randf(), randf(), randf())
 	
-	var weight_legal = day_handler.day == 0 if true else randi() > 0.45
+	content_model.mesh.surface_set_material(0, material)
+	var weight_legal = randi() > 0.45
 	if weight_legal and content_legal:
-		current_npc_information["content_weight"] = randi_range(LIQUIDS[current_npc_information["content"]]-50, LIQUIDS[current_npc_information["content"]])
+		current_npc_information["content_weight"] = randi_range(LIQUIDS[current_npc_information["content"]]["max"]-50, LIQUIDS[current_npc_information["content"]]["max"])
 	else:
-		if content_legal:
-			current_npc_information["content_weight"] = randi_range(LIQUIDS[current_npc_information["content"]]+10, LIQUIDS[current_npc_information["content"]]+100)
+		if day_handler.day > 0:
+			if content_legal:
+				current_npc_information["content_weight"] = randi_range(LIQUIDS[current_npc_information["content"]]["max"]+10, LIQUIDS[current_npc_information["content"]]["max"]+100)
+			else:
+				current_npc_information["content_weight"] = randi_range(70, 100)
+			current_npc_information["errors"].append("illegal-weight")
 		else:
-			current_npc_information["content_weight"] = randi_range(70, 100)
-		current_npc_information["errors"].append("illegal-weight")
-			
+			if content_legal:
+				current_npc_information["content_weight"] = randi_range(LIQUIDS[current_npc_information["content"]]["max"], LIQUIDS[current_npc_information["content"]]["max"])
+			else:
+				current_npc_information["content_weight"] = randi_range(70, 100)
+
 	# Editing passport
 	var passport: Area3D = npc.get_node("Npc").get_node("Passport")
 	var passport_bottom: MeshInstance3D = passport.get_node("Bottom")
@@ -202,8 +248,10 @@ func give_items_back() -> Tween:
 	
 	return tween
 	
-
 func approve_npc() -> void:
+	if day_handler.current_time > 15 and day_handler.day == 0:
+		return
+		
 	if moved_items == false: 
 		approve_stamp.block = false
 		return
@@ -224,14 +272,18 @@ func approve_npc() -> void:
 	
 	if len(current_npc_information["errors"]) == 0:
 		print("Correct")
+		day_handler.today_earnings += correct_fare
 	else:
 		print("Wrong!")
 		print(current_npc_information["errors"])
+		day_handler.today_earnings -= wrong_fare
 	
 	current_npc.queue_free()
 	current_npc = null
 	
 func deny_npc() -> void:
+	if day_handler.current_time > 15 and day_handler.day == 0:
+		return
 	if moved_items == false: 
 		deny_stamp.block = false
 		return
@@ -255,14 +307,16 @@ func deny_npc() -> void:
 	if len(current_npc_information["errors"]) > 0:
 		print("Correct")
 		print(current_npc_information["errors"])
+		day_handler.today_earnings += correct_fare
 	else:
 		print("Wrong!")
+		day_handler.today_earnings -= wrong_fare
 	
 	current_npc.queue_free()
 	current_npc = null
 
 func _unpause_time() -> void:
-	day_handler.process_mode = Node.PROCESS_MODE_INHERIT
+	day_handler.day_timer.paused = false
 	
 func prompt_message(text: String) -> Signal:
 	var message = MESSAGE_SCENE.instantiate()
@@ -270,7 +324,7 @@ func prompt_message(text: String) -> Signal:
 	message.on_continue.connect(_unpause_time)
 	
 	get_parent().add_child(message)
-	day_handler.process_mode = Node.PROCESS_MODE_DISABLED
+	day_handler.day_timer.paused = true
 
 
 	return message.on_continue
@@ -287,14 +341,43 @@ func _on_day_day_started() -> void:
 		rulebook_tab.set_tab_hidden(idx, false)
 		scale_object.visible = true
 		bucket_point.position = Vector3(-0.981, 0.954, -0.393)
+		get_tree().create_timer(2).timeout.connect(
+			prompt_message.bind(messages.messages["day2"].text)
+		)
 	
 	if current_npc:
 		current_npc.queue_free()
 		current_npc = null
 		scale_object.get_node("Label").text = "0 st"
 
+func _play_sfx(stream: AudioStream):
+	var sound: AudioStreamPlayer = AudioStreamPlayer.new()
+	sound.bus = "SFX"
+	sound.stream = stream
+	get_parent().add_child(sound)
+	sound.play()
+	sound.finished.connect(sound.queue_free)
+
+func _act_terrorist() -> void:
+	var bucket: Node3D = current_npc.get_node("Npc/Bucket")
+	var particles: GPUParticles3D = bucket.get_node("GPUParticles3D")
+	var explosion: Node3D = bucket.get_node("Explosion")
+	
+	particles.visible = true
+	await get_tree().create_timer(2).timeout
+	explosion.visible = true
+	_play_sfx(EXPLOSION_SFX)
+	shake_strength = 0.5
+	await get_tree().create_timer(0.5).timeout
+	_play_sfx(EXPLOSION_SFX)
+	await get_tree().create_timer(0.5).timeout
+	day_handler.reset_day(true)
+	await get_tree().create_timer(1).timeout
+	shake_strength = 0
+
 func _on_npc_wait_timeout() -> void:
 	if day_handler.current_time > 15:
-		day_handler.process_mode = Node.PROCESS_MODE_DISABLED
+		day_handler.day_timer.paused = true
+		spawn_npc()
 	else:
 		spawn_npc()

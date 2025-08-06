@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://7uxevtchnoxp" path="res://scenes/overlaid_menus/mini_options_overlaid_menu.tscn" id="3_n67em"]
 
 [node name="PauseMenu" instance=ExtResource("1_jotxm")]
-z_index = 4096
 z_as_relative = false
 script = ExtResource("2_ggfh4")
 options_packed_scene = ExtResource("3_n67em")
@@ -13,3 +12,9 @@ main_menu_scene = "res://scenes/menus/main_menu/main_menu_with_animations.tscn"
 
 [node name="RestartButton" parent="MenuPanelContainer/MarginContainer/BoxContainer/MenuButtonsMargin/MenuButtons" index="1"]
 visible = false
+
+[node name="Save" type="Button" parent="MenuPanelContainer/MarginContainer/BoxContainer/MenuButtonsMargin/MenuButtons" index="3"]
+layout_mode = 2
+text = "Save"
+
+[connection signal="pressed" from="MenuPanelContainer/MarginContainer/BoxContainer/MenuButtonsMargin/MenuButtons/Save" to="." method="_on_save_pressed"]

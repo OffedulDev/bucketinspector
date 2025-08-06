@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Messages" load_steps=4 format=3 uid="uid://dfsw4gc24wwfe"]
+[gd_resource type="Resource" script_class="Messages" load_steps=5 format=3 uid="uid://dfsw4gc24wwfe"]
 
 [ext_resource type="Script" uid="uid://d0gtw3p0bx0hg" path="res://scenes/inspector/message_resource.gd" id="1_hmcm0"]
 [ext_resource type="Script" uid="uid://c12clcn0drf35" path="res://scenes/inspector/messages_resource.gd" id="2_mq8qr"]
@@ -14,9 +14,24 @@ Remember to follow the king's rules and laws [color=yellow]AT ALL TIMES[/color] 
 "
 metadata/_custom_type_script = "uid://d0gtw3p0bx0hg"
 
+[sub_resource type="Resource" id="Resource_pg2ks"]
+script = ExtResource("1_hmcm0")
+text = "[font_size=32]New regulations[/font_size]
+Hello Inspector, as you may have noticed yesterday some people were [b]bringing legal
+liquids[/b] but [color=yellow]far too much of them...[/color] which as you have experience can result in them
+begin.. well... unstable.
+Our mighty King has imposed new and more strict laws, and now [i]every
+liquid coming in the kingdom[/i] [b][color=green]MUST meet a specific weight
+restriction[/b][/color] if it is too heavy [color=red][u]THEY MUST BE DECLINED![/u][/color]
+
+You can find the new regulation in your [color=teal]Rulebook[/color] by pressing [b]R[/b] 
+"
+metadata/_custom_type_script = "uid://d0gtw3p0bx0hg"
+
 [resource]
 script = ExtResource("2_mq8qr")
 messages = Dictionary[String, ExtResource("1_hmcm0")]({
+"day2": SubResource("Resource_pg2ks"),
 "intro": SubResource("Resource_mn20k")
 })
 metadata/_custom_type_script = "uid://c12clcn0drf35"
