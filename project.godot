@@ -11,9 +11,11 @@ config_version=5
 [application]
 
 config/name="BucketInspector"
+config/version="0.1.0"
 run/main_scene="res://scenes/opening/opening_with_logo.tscn"
 config/features=PackedStringArray("4.4", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="uid://bc6bgwtmbqwko"
+config/windows_native_icon="res://resources/icons/icon.ico"
 
 [autoload]
 
@@ -66,7 +68,7 @@ click={
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://addons/maaacks_menus_template/base/translations/menus_translations.en.translation", "res://addons/maaacks_menus_template/base/translations/menus_translations.fr.translation")
+locale/translations=PackedStringArray("res://resources/translation.en.translation", "res://resources/translation.it.translation")
 
 [maaacks_menus_template]
 

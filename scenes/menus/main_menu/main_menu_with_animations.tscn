@@ -1,10 +1,11 @@
-[gd_scene load_steps=20 format=4 uid="uid://du8imfjsc820u"]
+[gd_scene load_steps=21 format=4 uid="uid://du8imfjsc820u"]
 
 [ext_resource type="PackedScene" uid="uid://c6k5nnpbypshi" path="res://addons/maaacks_menus_template/base/scenes/menus/main_menu/main_menu.tscn" id="1_rr1rn"]
 [ext_resource type="Script" uid="uid://bkk013cfk0xrq" path="res://scenes/menus/main_menu/main_menu_with_animations.gd" id="2_sr523"]
 [ext_resource type="PackedScene" uid="uid://dmndio648art0" path="res://scenes/menus/options_menu/master_options_menu_with_tabs.tscn" id="3_ixa71"]
 [ext_resource type="PackedScene" uid="uid://lc5tx5lcpbuy" path="res://scenes/credits/scrolling_credits.tscn" id="4_rr1rn"]
 [ext_resource type="Texture2D" uid="uid://ca2dqkvn2ntg" path="res://resources/background.jpg" id="5_sr523"]
+[ext_resource type="Script" uid="uid://b5wpl63465fl2" path="res://scenes/menus/main_menu/language_selector.gd" id="6_ixa71"]
 
 [sub_resource type="Animation" id="1"]
 resource_name = "Intro"
@@ -407,4 +408,29 @@ visible = false
 layout_mode = 2
 text = "Continue"
 
+[node name="Language" type="VBoxContainer" parent="." index="10"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0173611
+anchor_top = 0.881173
+anchor_right = 0.222222
+anchor_bottom = 0.969136
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Language" index="0"]
+layout_mode = 2
+text = "Language"
+
+[node name="OptionButton" type="OptionButton" parent="Language" index="1"]
+layout_mode = 2
+size_flags_vertical = 3
+selected = 0
+item_count = 2
+popup/item_0/text = "English"
+popup/item_0/id = 0
+popup/item_1/text = "Italian"
+popup/item_1/id = 1
+script = ExtResource("6_ixa71")
+
 [connection signal="pressed" from="MenuContainer/MenuButtonsMargin/MenuButtonsContainer/MenuButtonsBoxContainer/ContinueGameButton" to="." method="_on_continue_game_button_pressed"]
+[connection signal="item_selected" from="Language/OptionButton" to="Language/OptionButton" method="_on_item_selected"]

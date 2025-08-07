@@ -178,10 +178,11 @@ func move_items_to_stand() -> void:
 	tween.set_parallel(false)
 	tween.tween_property(passport.get_node("Top"), "rotation_degrees", Vector3(0, -180, 0), 1)
 	
-	passport.mouse_entered.connect(focus_passport)
-	passport.mouse_exited.connect(unfocus)
-	bucket.mouse_entered.connect(focus_bucket)
-	bucket.mouse_exited.connect(unfocus)
+	if not terrorist_spawned:
+		passport.mouse_entered.connect(focus_passport)
+		passport.mouse_exited.connect(unfocus)
+		bucket.mouse_entered.connect(focus_bucket)
+		bucket.mouse_exited.connect(unfocus)
 	
 	if terrorist_spawned:
 		get_tree().create_timer(3).timeout.connect(_act_terrorist)
@@ -201,7 +202,7 @@ func spawn_npc() -> void:
 		current_npc_information["kingdom"] = KINGDOMS.pick_random()
 	else:
 		current_npc_information["kingdom"] = FAKE_KINGDOMS.pick_random()
-		current_npc_information["errors"].append("kingdom")
+		current_npc_information["errors"].append("fake kingdom")
 		
 	var content_legal = randf() > 0.45
 	var bucket: Area3D = npc.get_node("Npc/Bucket")
@@ -232,7 +233,7 @@ func spawn_npc() -> void:
 		if not color_faked:
 			material.albedo_color = Color(randf(), randf(), randf())
 			
-		current_npc_information["errors"].append("content")
+		current_npc_information["errors"].append("illegal content")
 	
 	content_model.mesh.surface_set_material(0, material)
 	var weight_legal = randi() > 0.45 or fake_content
@@ -244,7 +245,7 @@ func spawn_npc() -> void:
 				current_npc_information["content_weight"] = randi_range(LIQUIDS[current_npc_information["content"]]["max"]+10, LIQUIDS[current_npc_information["content"]]["max"]+100)
 			else:
 				current_npc_information["content_weight"] = randi_range(70, 100)
-			current_npc_information["errors"].append("illegal-weight")
+			current_npc_information["errors"].append("illegal weight")
 		else:
 			if content_legal:
 				current_npc_information["content_weight"] = randi_range(LIQUIDS[current_npc_information["content"]]["max"], LIQUIDS[current_npc_information["content"]]["max"])
@@ -261,9 +262,15 @@ func spawn_npc() -> void:
 	passport_bottom.get_node("Content").text = current_npc_information["content"] if not fake_content else fake_content
 
 	var tween: Tween = get_tree().create_tween()
-	tween.tween_property(npc, "progress_ratio", 0.5, 1)
+	tween.tween_property(npc, "progress_ratio", 0.5, 4)
 	
 	current_npc = npc
+	
+	var animation_player: AnimationPlayer = npc.get_node("Npc/Character/AnimationPlayer")
+	animation_player.play("walk")
+	await tween.finished
+	animation_player.stop()
+	animation_player.play("idle")
 
 @onready var approve_stamp = get_node("Approve")
 @onready var approve_stamp_initial_pos = approve_stamp.global_position
@@ -313,6 +320,10 @@ func approve_npc() -> void:
 	
 	tween = get_tree().create_tween()
 	tween.tween_property(current_npc, "progress_ratio", 1, 1)
+	var animation_player: AnimationPlayer = current_npc.get_node("Npc/Character/AnimationPlayer")
+	animation_player.stop()
+	animation_player.play("walk")
+	
 	await tween.finished
 	
 	if len(current_npc_information["errors"]) == 0:
@@ -321,6 +332,7 @@ func approve_npc() -> void:
 	else:
 		print("Wrong!")
 		print(current_npc_information["errors"])
+		prompt_message("You made a mistake! The stranger had the following issues: " + ",".join(current_npc_information["errors"]))
 		day_handler.today_earnings -= wrong_fare
 	
 	current_npc.queue_free()
@@ -347,6 +359,10 @@ func deny_npc() -> void:
 	tween.set_parallel(false)
 	tween.tween_property(current_npc.get_node("Npc"), "rotation_degrees", Vector3(0, 180, 0), 1)
 	tween.tween_property(current_npc, "progress_ratio", 0, 1)
+	var animation_player: AnimationPlayer = current_npc.get_node("Npc/Character/AnimationPlayer")
+	animation_player.stop()
+	animation_player.play("walk")
+	
 	await tween.finished
 	
 	if len(current_npc_information["errors"]) > 0:
@@ -355,6 +371,7 @@ func deny_npc() -> void:
 		day_handler.today_earnings += correct_fare
 	else:
 		print("Wrong!")
+		prompt_message("You made a mistake. The stranger didn't have any issues and could pass... but you DENIED HIM!")
 		day_handler.today_earnings -= wrong_fare
 	
 	current_npc.queue_free()
@@ -387,7 +404,7 @@ func _on_day_day_started() -> void:
 		
 		if day_handler.day == 0:
 			get_tree().create_timer(2).timeout.connect(
-				prompt_message.bind(messages.messages["intro"].text)
+				prompt_message.bind(tr(messages.messages["intro"].text))
 			)
 	if day_handler.day >= 1:
 		var idx = rulebook_tab.get_tab_idx_from_control(rulebook_tab.get_node("Weight Restrictions"))
@@ -398,7 +415,7 @@ func _on_day_day_started() -> void:
 		
 		if day_handler.day == 1:
 			get_tree().create_timer(2).timeout.connect(
-				prompt_message.bind(messages.messages["day1"].text)
+				prompt_message.bind(tr(messages.messages["day1"].text))
 			)
 	if day_handler.day >= 2:
 		get_parent().get_node("LabDesk").visible = true
@@ -409,7 +426,7 @@ func _on_day_day_started() -> void:
 		
 		if day_handler.day == 2:
 			get_tree().create_timer(2).timeout.connect(
-				prompt_message.bind(messages.messages["day2"].text)
+				prompt_message.bind(tr(messages.messages["day2"].text))
 			)
 	
 	if current_npc:
@@ -442,9 +459,11 @@ func _act_terrorist() -> void:
 	day_handler.reset_day(true)
 	await get_tree().create_timer(1).timeout
 	shake_strength = 0
+	
+	terrorist_spawned = false
 
 func _on_npc_wait_timeout() -> void:
-	if day_handler.current_time > 15:
+	if day_handler.current_time > 15 and day_handler.day == 0:
 		day_handler.day_timer.paused = true
 		terrorist_spawned = true
 		spawn_npc()

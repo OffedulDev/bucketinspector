@@ -1,0 +1,45 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://dy43tw1pkvycq"
+path="res://.godot/imported/peasant_1.fbx-988d8bfaf512565f589e3ef5bc3156a0.scn"
+
+[deps]
+
+source_file="res://scenes/npc/models/peasant_1.fbx"
+dest_files=["res://.godot/imported/peasant_1.fbx-988d8bfaf512565f589e3ef5bc3156a0.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=true
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+_subresources={
+"materials": {
+"People_texture_map": {
+"use_external/enabled": true,
+"use_external/path": "uid://oem8hk455dli"
+}
+}
+}
+fbx/importer=0
+fbx/allow_geometry_helper_nodes=false
+fbx/embedded_image_handling=1

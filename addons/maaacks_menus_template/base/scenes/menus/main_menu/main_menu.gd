@@ -101,7 +101,10 @@ func _ready() -> void:
 	_hide_new_game_if_unset()
 
 func _on_new_game_button_pressed() -> void:
-	new_game()
+	if SaveHandler.load_save() != null:
+		%SaveOverwriteDialog.popup_centered()
+	else:
+		new_game()
 
 func _on_options_button_pressed() -> void:
 	_open_sub_menu(options_scene)
@@ -118,3 +121,6 @@ func _on_credits_end_reached() -> void:
 
 func _on_back_button_pressed() -> void:
 	_close_sub_menu()
+
+func _on_save_overwrite_dialog_confirmed() -> void:
+	new_game()

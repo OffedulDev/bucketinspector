@@ -1,0 +1,123 @@
+,en,it
+day_label,DAY %s,GIORNO %s
+intro_message,"[font_size=32]Hello inspector![/font_size]
+I am [color=pink][i]Marshal Woody[/i][/color] of the mighty [color=teal]Kingdom of Vergonia[/color]
+Welcome to your checkpoint! The king has ordered for all strangers [color=green]bringing buckets[/color] to be sent here to be inspected... by [b]YOU![/b]
+This may look like a hard job and I can assure you that [b]it will be![/b]
+Press [b]R[/b] to open the [color=red]Rulebook[/color]
+Remember to follow the king's rules and laws [color=yellow]AT ALL TIMES[/color] or I WILL BE BACK","[font_size=32]Ciao ispettore![/font_size]
+Sono [color=pink][i]il maresciallo Woody[/i][/color] del potente [color=teal]Regno di Vergonia[/color]
+Benvenuto al tuo checkpoint! Il re ha ordinato che tutti gli stranieri [color=green]con i secchi[/color] vengano inviati qui per essere ispezionati... da [b]TE![/b]
+Potrebbe sembrare un lavoro difficile e posso assicurarti che [b]lo sarà![/b]
+Premi [b]R[/b] per aprire il [color=red]regolamento[/color]
+Ricorda di seguire le regole e le leggi del re [color=yellow]SEMPRE[/color] o tornerò io"
+day_2_message,"[font_size=32]Be aware![/font_size]
+Hey Inspector! Sorry to bother you again but something really important just came to
+my ears. [b]Outsiders[/b] are now using [color=yellow]special coloring agents[/color] to alter
+the color of some [color=red]illegal liquids[/color], for this task the king has [i]kindly provided
+you with some fancy new tools[/i]. If you look to your left ([i]A[/i]) you can see a new desk.
+The [color=yellow]shiny new cup[/color] has been found in an old temple and is
+able to [color=pink]always find out the real content of the bucket[/color] but
+[b]BE CAREFUL![/b] because it get's tired easily...
+
+You can check if the content color matches the correct one by looking at your updated [b][color=teal]Rulebook[/color][/b] by pressing [b]R[/b].","[font_size=32]Attenzione![/font_size]
+Ehi Ispettore! Scusa se ti disturbo di nuovo, ma mi è appena giunta voce di qualcosa di molto importante. Gli [b]stranieri[/b] stanno ora usando [color=yellow]speciali coloranti[/color] per alterare il colore di alcuni [color=red]liquidi illegali[/color], per questo compito il re ti ha [i]gentilmente fornito dei nuovi strumenti sofisticati[/i]. Se guardi alla tua sinistra ([i]A[/i]) puoi vedere una nuova scrivania. La [color=yellow]tazza nuova di zecca[/color] è stata trovata in un vecchio tempio ed è in grado di [color=pink]scoprire sempre il vero contenuto del secchio[/color] ma [b]FAI ATTENZIONE![/b] perché si stanca facilmente...
+
+Puoi controllare se il colore del contenuto corrisponde a quello corretto consultando il tuo [b][color=teal]Regolamento[/color][/b] aggiornato premendo [b]R[/b]."
+day_1_message,"[font_size=32]New regulations[/font_size]
+Hello Inspector, as you may have noticed yesterday some people were [b]bringing legal
+liquids[/b] but [color=yellow]far too much of them...[/color] which as you have experience can result in them
+begin.. well... unstable.
+Our mighty King has imposed new and more strict laws, and now [i]every
+liquid coming in the kingdom[/i] [b][color=green]MUST meet a specific weight
+restriction[/b][/color] if it is too heavy [color=red][u]THEY MUST BE DECLINED![/u][/color]
+
+You can find the new regulation in your [color=teal]Rulebook[/color] by pressing [b]R[/b] ","[font_size=32]Nuove normative[/font_size]
+Buongiorno Ispettore, come avrà potuto notare ieri alcune persone stavano [b]portando
+liquidi legali[/b], ma in [color=yellow]quantità eccessive...[/color] cosa che, come lei ben sa per esperienza, può
+renderli... beh... instabili.
+Il nostro possente Re ha imposto nuove leggi più severe, e ora [i]ogni liquido
+che entra nel regno[/i] [b][color=green]DEVE rispettare una specifica restrizione
+di peso[/b][/color]: se è troppo pesante [color=red][u]DEVONO ESSERE RIFIUTATI![/u][/color]
+
+Può trovare il nuovo regolamento nel suo [color=teal]Manuale delle Regole[/color] premendo [b]R[/b]"
+passport.name,NAME,NOME
+passport.surname,SURNAME,COGNOME
+passport.age,AGE,ETA'
+passport.kingdom,KINGDOM,REGNO
+passport.content,CONTENT,CONTENUTO
+rulebook.kingdoms,"[font_size=32]Kingdoms[/font_size]
+Some forgers might try to sneak in their bucket by putting a false kingdom name. 
+The only allowed kingdoms are:
+- Aethelgard
+- Bryndale
+- Caledon
+- Drakonburg
+- Emberfall
+- Gwynedd","[font_size=32]Regni[/font_size]
+Alcuni falsari potrebbero cercare di far entrare i loro secchi inserendo un nome di regno falso.
+Gli unici regni ammessi sono:
+- Aethelgard
+- Bryndale
+- Caledon
+- Drakonburg
+- Emberfall
+- Gwynedd"
+rulebook.liquids,"[font_size=32]Liquids[/font_size]
+Our [b]great kingdom[/b] has imposed very [b]heavy rules[/b] on which liquids are allowed to come in. The [i]laws are still begin written[/i] but here is a list of all allowed liquids, strangers bringing [b][color=green]other kinds[/color][/b] of liquids [color=red][b]MUST BE DENIED![/b][/color].
+- Aetherium
+- Sunpetal
+- Glimmer
+- Brightale
+- Dewdrop
+- Nectar","[font_size=32]Liquidi[/font_size]
+Il nostro [b]grande regno[/b] ha imposto [b]regole molto severe[/b] sui liquidi che è consentito far entrare. Le [i]leggi sono ancora in fase di stesura[/i], ma ecco una lista di tutti i liquidi ammessi. Gli stranieri che portano [b][color=green]altri tipi[/color][/b] di liquidi [color=red][b]DEVONO ESSERE RIFIUTATI![/b][/color].
+- Aetherium
+- Sunpetal
+- Glimmer
+- Brightale
+- Dewdrop
+- Nectar"
+rulebook.weight,"[font_size=32]Weight Restrictions[/font_size]
+[color=yellow]Keep an eye on the scale too[/color], even allowed liquids have [b]weight restrictions[/b], if a stranger is brining more than what's allowed, [color=red]DENY THEM[/color].
+- Aetherium max 100st
+- Sunpetal max 85st
+- Glimmer max 95st
+- Brightale max 120st
+- Dewdrop max 75st
+- Nectar max 90st","[font_size=32]Restrizioni di peso[/font_size]
+[color=yellow]Tenga d'occhio anche la bilancia[/color], anche i liquidi ammessi hanno [b]restrizioni di peso[/b]: se uno straniero ne porta più del consentito, [color=red]LO RIFIUTI[/color].
+- Aetherium massimo 100st
+- Sunpetal massimo 85st
+- Glimmer massimo 95st
+- Brightale massimo 120st
+- Dewdrop massimo 75st
+- Nectar massimo 90st"
+rulebook.fake_liquids,"[font_size=32]Fake Liquids[/font_size]
+Outsiders have discovered that by mixing the correct amounts of [color=yellow]special coloring agents[/color] they can alter the color of [color=red]ILLEGAL LIQUIDS[/color] to make them look like legal ones. [color=green]ALWAYS check the colors[/color] and if you are [b]unsure[/b] then carefully [color=teal]ASK THE CUP[/color]","[font_size=32]Liquidi falsi[/font_size]
+Gli stranieri hanno scoperto che, mescolando le giuste quantità di [color=yellow]speciali agenti coloranti[/color], possono alterare il colore dei [color=red]LIQUIDI ILLEGALI[/color] per farli sembrare legali. [color=green]CONTROLLI SEMPRE i colori[/color] e, se è [b]incerto[/b], [color=teal]CHIEDA CON CAUTELA ALLA TAZZA[/color]."
+rulebook.liquid_noun,Liquid,Liquido
+rulebook.color_noun,Color,Colore
+rulebook.tabs.kingdoms,Kingdoms,Regni
+rulebook.tabs.liquids,Liquids,Liquidi
+rulebook.tabs.weight restrictions,Weight Restrictions,Limiti di Peso
+rulebook.tabs.fake liquids,Fake Liquids,Liquidi Finti
+desk.passport,"PASSPORT
+HERE",PASSAPORTO QUI
+desk.bucket,BUCKET HERE,SECCHIO QUI
+desk.magic_cup,MAGIC CUP,CALICE MAGICO
+magic_cup.uses,%s uses,%s usi
+magic_cup.max_uses,"[font_size=20]The cup has NOT spoken![/font_size]
+The cup is [b]now tired and needs to rest[/b] for the day,
+sorry inspector!","[font_size=20]La tazza NON ha parlato![/font_size]
+La tazza è [b]ora stanca e ha bisogno di riposare[/b] per oggi,
+ci dispiace ispettore!"
+magic_cup.used,"[font_size=20]The cup has spoken![/font_size]
+The cup has spoken and it has determined with the power
+of ancient debris that the content the [color=yellow]outlander[/color]
+is bringing [b][color=pink]IS %s[/color][/b]","[font_size=20]La tazza ha parlato![/font_size]
+La tazza ha parlato e ha determinato, con il potere
+di antiche rovine, che il contenuto che lo [color=yellow]straniero[/color]
+sta portando [b][color=pink]È %s[/color][/b]"
+desk.approve,APPROVE,APPROVA
+desk.deny,DENY,RIFIUTA
