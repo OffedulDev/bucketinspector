@@ -1,11 +1,13 @@
-[gd_scene load_steps=21 format=4 uid="uid://du8imfjsc820u"]
+[gd_scene load_steps=25 format=4 uid="uid://du8imfjsc820u"]
 
 [ext_resource type="PackedScene" uid="uid://c6k5nnpbypshi" path="res://addons/maaacks_menus_template/base/scenes/menus/main_menu/main_menu.tscn" id="1_rr1rn"]
 [ext_resource type="Script" uid="uid://bkk013cfk0xrq" path="res://scenes/menus/main_menu/main_menu_with_animations.gd" id="2_sr523"]
 [ext_resource type="PackedScene" uid="uid://dmndio648art0" path="res://scenes/menus/options_menu/master_options_menu_with_tabs.tscn" id="3_ixa71"]
 [ext_resource type="PackedScene" uid="uid://lc5tx5lcpbuy" path="res://scenes/credits/scrolling_credits.tscn" id="4_rr1rn"]
 [ext_resource type="Texture2D" uid="uid://ca2dqkvn2ntg" path="res://resources/background.jpg" id="5_sr523"]
+[ext_resource type="FontFile" uid="uid://cmbce27wlhoyn" path="res://resources/AGITPM__.TTF" id="6_2k5l7"]
 [ext_resource type="Script" uid="uid://b5wpl63465fl2" path="res://scenes/menus/main_menu/language_selector.gd" id="6_ixa71"]
+[ext_resource type="FontFile" uid="uid://7m1ub72n0daj" path="res://resources/nokiafc22.ttf" id="7_vsp5b"]
 
 [sub_resource type="Animation" id="1"]
 resource_name = "Intro"
@@ -358,6 +360,19 @@ loop_mode = 1
 loop_end = 1278000
 stereo = true
 
+[sub_resource type="LabelSettings" id="LabelSettings_ixa71"]
+font = ExtResource("6_2k5l7")
+font_size = 59
+font_color = Color(0, 0.656596, 0.354479, 1)
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_6xh1d"]
+font = ExtResource("7_vsp5b")
+font_size = 25
+font_color = Color(0.412468, 0.109621, 0.578387, 1)
+outline_size = 6
+
 [node name="MainMenu" instance=ExtResource("1_rr1rn")]
 script = ExtResource("2_sr523")
 game_scene_path = "uid://j4p3aqv513wk"
@@ -388,13 +403,17 @@ modulate = Color(1, 1, 1, 0)
 
 [node name="TitleLabel" parent="MenuContainer/TitleMargin/TitleContainer" index="0"]
 text = "Bucket, Please!"
+label_settings = SubResource("LabelSettings_ixa71")
 auto_update = false
 
 [node name="SubTitleContainer" parent="MenuContainer/SubTitleMargin" index="0"]
 modulate = Color(1, 1, 1, 0)
 
 [node name="SubTitleLabel" parent="MenuContainer/SubTitleMargin/SubTitleContainer" index="0"]
+offset_top = 6.02
+offset_bottom = 40.02
 text = "A game totally not inspired by Papers, Please!"
+label_settings = SubResource("LabelSettings_6xh1d")
 
 [node name="MenuButtonsContainer" parent="MenuContainer/MenuButtonsMargin" index="0"]
 modulate = Color(1, 1, 1, 0)

@@ -1,0 +1,71 @@
+[gd_scene load_steps=4 format=3 uid="uid://d0wrqbhc2fnjx"]
+
+[ext_resource type="FontFile" uid="uid://7m1ub72n0daj" path="res://resources/nokiafc22.ttf" id="1_lp0xk"]
+[ext_resource type="Script" uid="uid://dpinrwxktmte3" path="res://scenes/inspector/denial_reason.gd" id="1_wpgha"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_my276"]
+font = ExtResource("1_lp0xk")
+
+[node name="DenialReason" type="Control"]
+layout_mode = 3
+anchor_left = 0.352431
+anchor_top = 0.199074
+anchor_right = 0.649306
+anchor_bottom = 0.765432
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_wpgha")
+metadata/_edit_use_anchors_ = true
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Choose denial reason/s"
+label_settings = SubResource("LabelSettings_my276")
+
+[node name="Reasons" type="ScrollContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Reasons"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Add" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "ADD"
+
+[node name="Confirm" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+modulate = Color(0.459936, 0.852138, 0.366084, 1)
+layout_mode = 2
+text = "CONFIRM"
+
+[node name="Cancel" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+modulate = Color(0.821152, 0.394238, 0.463927, 1)
+layout_mode = 2
+text = "CANCEL"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Add" to="." method="_on_add_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Confirm" to="." method="_on_confirm_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Cancel" to="." method="_on_cancel_pressed"]

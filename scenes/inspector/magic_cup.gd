@@ -1,4 +1,10 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
 extends Area3D
+
+const MAGIC_CUP_SFX = preload("res://scenes/inspector/magic_cup_sound.mp3")
+const LIGHT_CUP_SFX = preload("res://scenes/inspector/light.mp3")
 
 @onready var model: Node3D = get_node("Model")
 @onready var fire_particles: GPUParticles3D = model.get_node("Fire")
@@ -17,8 +23,10 @@ func _ready():
 func _light_cup() -> void:
 	lighted = true
 	fire_particles.visible = true
+	inspector._play_sfx(LIGHT_CUP_SFX)
 
 func _use_cup() -> void:
+	inspector._play_sfx(MAGIC_CUP_SFX)
 	if uses == MAX_USES: 
 		inspector.prompt_message(tr("magic_cup.max_uses"))
 		return
@@ -59,3 +67,9 @@ func _on_input_event(camera: Node, event: InputEvent, event_position: Vector3, n
 					_light_cup()
 			else:
 				_use_cup()
+
+func _on_day_day_started() -> void:
+	uses = 0
+	uses_label.text = tr("magic_cup.uses") % [str(uses) + "/" + str(MAX_USES)]
+	lighted = false
+	fire_particles.visible = false

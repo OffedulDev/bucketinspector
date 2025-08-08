@@ -1,4 +1,9 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
 extends Area3D
+
+const WOOSH = preload("res://scenes/inspector/woosh.mp3")
 
 @onready var inspector = get_parent()
 @onready var tween: Tween
@@ -27,6 +32,7 @@ func _mouse_enter() -> void:
 	
 	get_node("Label").visible = true
 	status = "enter"
+	inspector._play_sfx(WOOSH, -15)
 
 func _mouse_exit() -> void:
 	if block == true: return

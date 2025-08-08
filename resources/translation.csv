@@ -85,7 +85,8 @@ rulebook.weight,"[font_size=32]Weight Restrictions[/font_size]
 - Glimmer max 95st
 - Brightale max 120st
 - Dewdrop max 75st
-- Nectar max 90st","[font_size=32]Restrizioni di peso[/font_size]
+- Nectar max 90st
+","[font_size=32]Restrizioni di peso[/font_size]
 [color=yellow]Tenga d'occhio anche la bilancia[/color], anche i liquidi ammessi hanno [b]restrizioni di peso[/b]: se uno straniero ne porta più del consentito, [color=red]LO RIFIUTI[/color].
 - Aetherium massimo 100st
 - Sunpetal massimo 85st
@@ -104,7 +105,7 @@ rulebook.tabs.weight restrictions,Weight Restrictions,Limiti di Peso
 rulebook.tabs.fake liquids,Fake Liquids,Liquidi Finti
 desk.passport,"PASSPORT
 HERE",PASSAPORTO QUI
-desk.bucket,BUCKET HERE,SECCHIO QUI
+desk.bucket,BUCKET\n HERE,SECCHIO\n QUI
 desk.magic_cup,MAGIC CUP,CALICE MAGICO
 magic_cup.uses,%s uses,%s usi
 magic_cup.max_uses,"[font_size=20]The cup has NOT spoken![/font_size]
@@ -121,3 +122,43 @@ di antiche rovine, che il contenuto che lo [color=yellow]straniero[/color]
 sta portando [b][color=pink]È %s[/color][/b]"
 desk.approve,APPROVE,APPROVA
 desk.deny,DENY,RIFIUTA
+magic_cup.test_content,TEST CONTENT,ANALIZZA
+magic_cup.light,LIGHT,ACCENDI
+mistake.fatal,You made a fatal mistake! The outsider has caused some serious trouble. -50€.... The issues were: %s,Hai commesso un errore fatale! Lo straniero ha causato problemi seri. -50€... I problemi erano %s
+mistake.normal,You made a mistake! The stranger had the following issues: ,Hai commesso un errore! Lo straniero aveva i seguenti problemi:
+day_5_message,"[font_size=32]Bombs and explosives[/font_size]
+Hello Inspector... as you've seen yesterday some clever stranger decided to [b][color=yellow]put a goblin bomb inside the bucket[/color][/b].
+To prevent that issue from ever happening again we have hired a [color=green]magic wand[/color]. This wand was found near the
+king's [i]toilet[/i]... no... sorry... [b] what I meant to say was[/b] that it was found near the [i]king's throne[/i]! But remember... the wand costs money to use.
+Anyways inspector, bring up your [color=teal]Rulebook[/color] with [b]R[/b] to learn how to detect explosives without the wand and get to work!","[font_size=32]Bombe ed esplosivi[/font_size]
+Ciao ispettore... come hai visto ieri qualche sconosciuto furbacchione ha deciso di [b][color=yellow]mettere una bomba goblin dentro il secchio[/color][/b].
+Per evitare che questo problema accada di nuovo, abbiamo assunto una [color=green]bacchetta magica[/color]. Questa bacchetta è stata trovata vicino al
+[i]cesso[/i] del re... no... scusa... [b]quello che volevo dire era[/b] che è stata trovata vicino al [i]trono del re[/i]! Però ricorda.. la bacchetta costa soldi per essere usata.
+Comunque ispettore, tira fuori il tuo [color=teal]Regolamento[/color] con [b]R[/b] per imparare a individuare gli esplosivi senza la bacchetta e mettiti al lavoro!"
+magic_wand.has_explosive,"[font_size=20]The wand has been swung![/font_size]
+The wand has been used and it has determined that the stranger [b][color=red]IS CONCELING A DEADLY ITEM IN THE BUCKET[/color][/b]","[font_size=20]La bacchetta è stata agitata![/font_size]
+La bacchetta è stata usata e ha stabilito che lo sconosciuto [b][color=red]NASCONDE UN OGGETTO MORTALE NEL SECCHIO[/color][/b]"
+magic_wand.clear,"[font_size=20]The wand has been swung![/font_size]
+The wand has been used and it has determined that the stranger is [color=green]NOT CONCELING ANYTHING DEADLY[/color]","[font_size=20]La bacchetta è stata agitata![/font_size]
+La bacchetta è stata usata e ha stabilito che lo sconosciuto [color=green]NON NASCONDE NULLA DI MORTALE[/color]"
+magic_wand.name,MAGIC WAND,BACCHETTA
+magic_wand.use,USE,USA
+furnace.burn_out,You let the furnace burn out and therefore the day has ended early... [b]Marshal Woody[/b] also fined you €%s,"Hai lasciato che la fornace si spegnesse e perciò la giornata è finita prima... ah, il [b]Maresciallo Woody[/b] ti ha anche multato €%s"
+furnace.fuel,FUEL,ALIMENTA
+day_6_message,"[font_size=32]Low on energy![/font_size]
+Hello Inspector, I'm sorry to tell you that the nearby [b][color=purple]magic power plant[/color][/b] is experiencing issues, therefore we have provided you with this [b][color=orange]furnace[/color][/b] that you can see on your right (press [b]D[/b]).
+This furnace [i][color=red]fuels your entire equipment[/color][/i] don't let it burn out early, or there [b][color=yellow]WILL BE CONSEQUENCES![/color][/b]. Remember [b][color=teal]WHEN THE BELL SOUNDS CHECK THE FURNACE![/color][/b]","[font_size=32]Poca energia![/font_size]
+Ciao Ispettore, mi dispiace informarti che la [b][color=purple]centrale elettrica magica[/color][/b] qui vicino sta avendo dei problemi, perciò ti abbiamo fornito questa [b][color=orange]fornace[/color][/b] che puoi vedere alla tua destra (premi [b]D[/b]).
+Questa fornace [i][color=red]alimenta tutta la tua attrezzatura[/color][/i], non lasciarla spegnere in anticipo, altrimenti ci [b][color=yellow]SARANNO DELLE CONSEGUENZE![/color][/b]. Ricorda [b][color=teal]QUANDO SUONA LA CAMPANA CONTROLLA LA FORNACE![/color][/b]"
+warning_message,"[font_size=32]WARNING![/font_size]
+This game was made for [b][color=green]Jame Gam #52[/color][/b], the game is endless but there is [b]new stuff only until day 6[/b]","[font_size=32]ATTENZIONE![/font_size]
+Questo gioco è stato creato per la [b][color=green]Jame Gam #52[/color][/b], il gioco è infinito ma ci sono [b]nuove cose solo fino al giorno 6[/b]"
+rulebook.explosives,"[font_size=32]Bombs[/font_size]
+Outsiders will also try to hide [b]explosives inside the bucket[/b], it is unknown when they [i]could go off[/i] so you have to detect them and deny the outsider. To do so you have [b]two options[/b]:
+- Use the [color=purple][b]Magic Wand[/b][/color] for €30/use if you're not sure.
+- Look at the bucket, if there is an explosive it may [color=green][b]bubble every few seconds[/b][/color] 
+","[font_size=32]Bombe[/font_size]
+Gli esterni proveranno anche a nascondere degli [b]esplosivi nel secchio[/b], non si sa quando potrebbero [i]detonare[/i] quindi devi rilevarli e negare l'accesso all'esterno. Per farlo hai [b]due opzioni[/b]:
+- Usa la [color=purple][b]Bacchetta Magica[/b][/color] per 30€/utilizzo se non sei sicuro.
+- Guarda il secchio, se c'è un esplosivo potrebbe fare delle [color=green][b]bolle ogni pochi secondi[/b][/color]"
+rulebook.tabs.explosives,Explosives,Bombe

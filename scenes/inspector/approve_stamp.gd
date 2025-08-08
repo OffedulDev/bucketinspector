@@ -1,5 +1,7 @@
 extends Area3D
 
+const WOOSH = preload("res://scenes/inspector/woosh.mp3")
+
 @onready var inspector = get_parent()
 @onready var tween: Tween
 @onready var deny_stamp = get_parent().get_node("Deny")
@@ -27,6 +29,7 @@ func _mouse_enter() -> void:
 	
 	get_node("Label").visible = true
 	status = "enter"
+	inspector._play_sfx(WOOSH, -15)
 
 func _mouse_exit() -> void:
 	if block == true: return
