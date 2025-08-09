@@ -20,7 +20,7 @@ func selected_reason(index: int, button: OptionButton, id: int) -> void:
 var i = 0
 func add_reason() -> void:
 	i += 1
-	var den_reasons = Utils.DENIAL_REASONS.values()
+	var den_reasons = Utils.SHOWING_REASONS.values()
 	var button = OptionButton.new()
 	reasons.set(i, den_reasons[0])
 	for reason in den_reasons:
@@ -33,7 +33,7 @@ func add_reason() -> void:
 func _ready() -> void:
 	position = Vector2(400, -300)
 	visible = true
-	get_tree().create_tween().tween_property(self, "position", Vector2(400, 210), 0.3)
+	get_tree().create_tween().tween_property(self, "position", Vector2(400, 130), 0.3)
 		
 func _on_add_pressed() -> void:
 	add_reason()

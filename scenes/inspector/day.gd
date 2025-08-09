@@ -45,7 +45,7 @@ func _process(delta: float) -> void:
 	if get_parent().get_node("Inspector").current_npc == null:
 		_free.emit()
 
-var day = 7
+var day = 4
 var today_earnings = 0
 var waiting = false
 signal day_started

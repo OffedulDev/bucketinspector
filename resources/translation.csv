@@ -129,18 +129,16 @@ mistake.normal,You made a mistake! The stranger had the following issues: ,Hai c
 day_5_message,"[font_size=32]Bombs and explosives[/font_size]
 Hello Inspector... as you've seen yesterday some clever stranger decided to [b][color=yellow]put a goblin bomb inside the bucket[/color][/b].
 To prevent that issue from ever happening again we have hired a [color=green]magic wand[/color]. This wand was found near the
-king's [i]toilet[/i]... no... sorry... [b] what I meant to say was[/b] that it was found near the [i]king's throne[/i]! But remember... the wand costs money to use.
-Anyways inspector, bring up your [color=teal]Rulebook[/color] with [b]R[/b] to learn how to detect explosives without the wand and get to work!","[font_size=32]Bombe ed esplosivi[/font_size]
-Ciao ispettore... come hai visto ieri qualche sconosciuto furbacchione ha deciso di [b][color=yellow]mettere una bomba goblin dentro il secchio[/color][/b].
-Per evitare che questo problema accada di nuovo, abbiamo assunto una [color=green]bacchetta magica[/color]. Questa bacchetta è stata trovata vicino al
-[i]cesso[/i] del re... no... scusa... [b]quello che volevo dire era[/b] che è stata trovata vicino al [i]trono del re[/i]! Però ricorda.. la bacchetta costa soldi per essere usata.
-Comunque ispettore, tira fuori il tuo [color=teal]Regolamento[/color] con [b]R[/b] per imparare a individuare gli esplosivi senza la bacchetta e mettiti al lavoro!"
-magic_wand.has_explosive,"[font_size=20]The wand has been swung![/font_size]
-The wand has been used and it has determined that the stranger [b][color=red]IS CONCELING A DEADLY ITEM IN THE BUCKET[/color][/b]","[font_size=20]La bacchetta è stata agitata![/font_size]
-La bacchetta è stata usata e ha stabilito che lo sconosciuto [b][color=red]NASCONDE UN OGGETTO MORTALE NEL SECCHIO[/color][/b]"
-magic_wand.clear,"[font_size=20]The wand has been swung![/font_size]
-The wand has been used and it has determined that the stranger is [color=green]NOT CONCELING ANYTHING DEADLY[/color]","[font_size=20]La bacchetta è stata agitata![/font_size]
-La bacchetta è stata usata e ha stabilito che lo sconosciuto [color=green]NON NASCONDE NULLA DI MORTALE[/color]"
+king's [i]toilet[/i]... no... sorry... [b] what I meant to say was[/b] that it was found near the [i]king's throne[/i]!
+If you decide to use the wand it will protect you from explosives.
+Anyways inspector, bring up your [color=teal]Rulebook[/color] with [b]R[/b] to learn how to detect explosives and get to work!","[font_size=32]Bombe ed esplosivi[/font_size]
+Salve Ispettore... come ha visto ieri, qualche astuto sconosciuto ha deciso di [b][color=yellow]mettere una bomba goblin all'interno del secchio[/color][/b].
+Per evitare che questo problema si ripeta, abbiamo assunto una [color=green]bacchetta magica[/color]. Questa bacchetta è stata trovata vicino al [i]cesso[/i] del re... no... scusi... [b]quello che intendevo dire è che[/b] è stata trovata vicino al [i]trono del re[/i]!
+Se deciderà di usare la bacchetta, la proteggerà dagli esplosivi.
+Ad ogni modo, ispettore, tiri fuori il suo [color=teal]Regolamento[/color] con [b]R[/b] per imparare a rilevare gli esplosivi e si metta al lavoro!"
+magic_wand.used,"[font_size=20]The wand is now protecting you![/font_size]
+In case you now miss an explosive you won't get fined or end the day. This insurance expires every time you miss a bomb.","[font_size=20]La bacchetta magica ora ti protegge![/font_size]
+Nel caso in cui tu ora manchi un esplosivo non verrai multato o non terminerai la giornata. Questa assicurazione scade ogni volta che manchi una bomba."
 magic_wand.name,MAGIC WAND,BACCHETTA
 magic_wand.use,USE,USA
 furnace.burn_out,You let the furnace burn out and therefore the day has ended early... [b]Marshal Woody[/b] also fined you €%s,"Hai lasciato che la fornace si spegnesse e perciò la giornata è finita prima... ah, il [b]Maresciallo Woody[/b] ti ha anche multato €%s"
@@ -154,11 +152,25 @@ warning_message,"[font_size=32]WARNING![/font_size]
 This game was made for [b][color=green]Jame Gam #52[/color][/b], the game is endless but there is [b]new stuff only until day 6[/b]","[font_size=32]ATTENZIONE![/font_size]
 Questo gioco è stato creato per la [b][color=green]Jame Gam #52[/color][/b], il gioco è infinito ma ci sono [b]nuove cose solo fino al giorno 6[/b]"
 rulebook.explosives,"[font_size=32]Bombs[/font_size]
-Outsiders will also try to hide [b]explosives inside the bucket[/b], it is unknown when they [i]could go off[/i] so you have to detect them and deny the outsider. To do so you have [b]two options[/b]:
-- Use the [color=purple][b]Magic Wand[/b][/color] for €30/use if you're not sure.
-- Look at the bucket, if there is an explosive it may [color=green][b]bubble every few seconds[/b][/color] 
-","[font_size=32]Bombe[/font_size]
-Gli esterni proveranno anche a nascondere degli [b]esplosivi nel secchio[/b], non si sa quando potrebbero [i]detonare[/i] quindi devi rilevarli e negare l'accesso all'esterno. Per farlo hai [b]due opzioni[/b]:
-- Usa la [color=purple][b]Bacchetta Magica[/b][/color] per 30€/utilizzo se non sei sicuro.
-- Guarda il secchio, se c'è un esplosivo potrebbe fare delle [color=green][b]bolle ogni pochi secondi[/b][/color]"
+Outsiders will also try to hide [b]explosives inside the bucket[/b], it is unknown when they [i]could go off[/i] so you have to detect them and deny the outsider.
+To detect bombs please follow these instructions.
+[hr][/hr]
+The bucket has a bomb if
+- [b]the bucket bubbles [color=yellow]yellow[/color][b] and has [b]both[/b] a [color=pink]pink[/color] and [color=green]green[/color] sticker.
+- [b]the bucket bubbles [color=red]red[/color] and it has [b]3 stickers[/b] or less and also [i]weights[/i] less than [i]50st[/i]","[font_size=32]Bombe[/font_size]
+Gli stranieri cercheranno di nascondere [b]esplosivi all'interno del secchio[/b]; non si sa quando [i]potrebbero esplodere[/i], quindi devi rilevarli e negare l'accesso all'esterno.
+Per rilevare le bombe, segui queste istruzioni.
+[hr][/hr]
+Ci sono due tipi di bombe, [b]entrambe devono essere negate[/b], ma devi scegliere quella corretta quando compili la [i]motivazione del rifiuto[/i].
+È una [color=teal]bomba di tipo 1[/color] se [b]il secchio fa bolle [color=yellow]gialle[/color][/b] e ha [b]sia[/b] un adesivo [color=pink]rosa[/color] che [color=green]verde[/color].
+È una [color=teal]bomba di tipo 2[/color] se [b]il secchio fa bolle [color=red]rosse[/color][/b] e ha [b]3 adesivi[/b] o meno e [i]pesa[/i] anche meno di [i]50st[/i]."
 rulebook.tabs.explosives,Explosives,Bombe
+mistake.insurance,You made a fatal mistake but your magical wand saved you.,Hai commesso un errore fatale ma la bacchetta magica ti ha salvato
+reasons.illegalcontent,Illegal content,Contenuto illegale
+reasons.fakekingdom,Fake kingdom,Regno finto
+reasons.illegalweight,Illegal weight,Peso illegale
+reasons.explosive1,Type 1 explosive,Bomba di tipo 1
+reasons.explosive2,Type 2 explosive,Bomba di titpo 2
+day_4_message,"[font_size=32]Be aware![/font_size]
+Hey Inspector! Sorry to bother you again but something really important just came to my ears. Due to a new wave of [b]bad press[/b] about the border's [color=red]inhumane treatment[/color] towards innocent travelers, we are now required to provide a [color=yellow]reason[/color] for every denied entry.","[font_size=32]Attenzione![/font_size]
+Ehi Ispettore! Mi dispiace disturbarti di nuovo, ma mi è appena giunta voce di una cosa davvero importante. A causa di una nuova ondata di [b]cattiva pubblicità[/b] sul [color=red]trattamento disumano[/color] riservato ai viaggiatori innocenti al confine, ora ci è richiesto di fornire una [color=yellow]motivazione[/color] per ogni ingresso negato."

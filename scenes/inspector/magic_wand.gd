@@ -28,10 +28,8 @@ func use_wand():
 	if day_handler.money > 30:
 		day_handler.money -= 30
 		inspector._play_sfx(MAGIC_SFX)
-		if "had explosive" in inspector.current_npc_information["errors"]:
-			inspector.prompt_message(tr("magic_wand.has_explosive"))
-		else:
-			inspector.prompt_message(tr("magic_wand.clear"))
+		inspector.insurance = true
+		inspector.prompt_message(tr("magic_wand.used"))
 
 func _input_event(camera: Camera3D, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if event.is_action_pressed("click"):

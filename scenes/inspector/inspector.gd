@@ -93,6 +93,7 @@ var moved_items = false
 @onready var passport_view: Node3D = get_parent().get_node("PassportView")
 @onready var normal_view: Node3D = get_parent().get_node("NormalView")
 @onready var bucket_view: Node3D = get_parent().get_node("BucketView")
+@onready var bucket_wall_view: Node3D = get_parent().get_node("BucketWallView")
 @onready var furnace_view: Node3D = get_parent().get_node("FurnaceView")
 @onready var lab_view: Node3D = get_parent().get_node("LabView")
 @onready var scale_object: Area3D = get_node("Scale")
@@ -104,6 +105,7 @@ var moved_items = false
 @export var correct_fare: int = 0
 @export var wrong_fare: int = 0
 
+var insurance = false
 var decay = 0.8
 var max_offset = Vector2(0.5, 0.5)
 var max_roll = 0.1
@@ -127,6 +129,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				move_items_to_stand()
 	elif event.is_action_pressed("rulebook"):
 		rulebook.visible = not rulebook.visible
+		Engine.time_scale = 0.5 if rulebook.visible else 1
 	elif event.is_action_pressed("look_left"):
 		if looking == 0:
 			if day_handler.day > 1:
@@ -153,6 +156,11 @@ func _unhandled_input(event: InputEvent) -> void:
 func focus_scale() -> void:
 	var tween: Tween = get_tree().create_tween()
 	tween.tween_property(camera, "global_transform", scale_view.global_transform, 0.5)
+	_play_sfx(WOOSH_SFX, -15)
+
+func focus_wall_bucket() -> void:
+	var tween: Tween = get_tree().create_tween()
+	tween.tween_property(camera, "global_transform", bucket_wall_view.global_transform, 0.5)
 	_play_sfx(WOOSH_SFX, -15)
 
 func focus_furnace() -> void:
@@ -217,9 +225,18 @@ func move_items_to_stand() -> void:
 		passport.mouse_exited.connect(unfocus)
 		bucket.mouse_entered.connect(focus_bucket)
 		bucket.mouse_exited.connect(unfocus)
+		bucket.get_node("Wall").mouse_entered.connect(focus_wall_bucket)
+		bucket.get_node("Wall").mouse_exited.connect(unfocus)
 	
 	if terrorist_spawned:
 		get_tree().create_timer(3).timeout.connect(_act_terrorist)
+
+func random_bright_color() -> Color:
+	var hue = randf()
+	var saturation = 0.7 + randf() * 0.3
+	var value = 0.8 + randf() * 0.2
+	var color = Color.from_hsv(hue, saturation, value)
+	return color
 
 func spawn_npc() -> void:	
 	var npc: PathFollow3D = NPC_SCENE.instantiate()
@@ -292,9 +309,56 @@ func spawn_npc() -> void:
 
 	if day_handler.day > 4:
 		var explosive = randf() > 0.4
+		var particles: GPUParticles3D = bucket.get_node("GPUParticles3D")
+		var d_pass = particles.draw_pass_1
+		var pass_material: StandardMaterial3D = StandardMaterial3D.new()
+		var stickers_amount = randi_range(1, 8)
+		var stickers = bucket.get_node("Stickers")
 		if explosive:
-			current_npc_information["errors"].append(Utils.DENIAL_REASONS["explosive"])
 			get_node("ExplosiveHintTimer").start() 
+			
+			var explosive_type = randf() > 0.5
+			if explosive_type:
+				# type 1
+				var pink_sticker: Sprite3D = stickers.get_children().pick_random()
+				pink_sticker.modulate = Color("#ff75e8")
+				pink_sticker.visible = true
+				pink_sticker.reparent(stickers.get_parent())
+				var green_sticker: Sprite3D = stickers.get_children().pick_random()
+				green_sticker.modulate = Color("#097969")
+				green_sticker.visible = true
+				green_sticker.reparent(stickers.get_parent())
+				print("type 1 explosive")
+				current_npc_information["errors"].append(Utils.DENIAL_REASONS["explosive1"])
+
+				pass_material.albedo_color = Color(1, 1, 0, 0.5)
+			else:
+				# type 2
+				current_npc_information["errors"].append(Utils.DENIAL_REASONS["explosive2"])
+				stickers_amount = randi_range(1,3)
+				current_npc_information["content_weight"] = randi_range(20, 45)
+				pass_material.albedo_color = Color(1, 0, 0, 0.5)
+				print("type 2 explosive")
+				
+		else:
+			#no explosive
+			var decpetive_bubble = randf() > 0.5
+			if decpetive_bubble:
+				pass_material.albedo_color = [
+					Color(1, 1, 0, 0.5),
+					Color(1, 0, 0, 0.5),
+					Color(0, 1, 0, 0.5),
+					Color(0, 0, 1, 0.5)
+				].pick_random()
+				
+		# generate stickers
+		for i in range(stickers_amount):
+			var sticker = stickers.get_children().pick_random()
+			sticker.modulate = random_bright_color()
+			sticker.visible = true
+			sticker.reparent(stickers.get_parent())
+		
+		d_pass.surface_set_material(0, pass_material)
 
 	# Editing passport
 	var passport: Area3D = npc.get_node("Npc").get_node("Passport")
@@ -312,8 +376,9 @@ func spawn_npc() -> void:
 	var animation_player: AnimationPlayer = npc.get_node("Npc/Character/AnimationPlayer")
 	animation_player.play("walk")
 	await tween.finished
-	animation_player.stop()
-	animation_player.play("idle")
+	if is_instance_valid(animation_player):
+		animation_player.stop()
+		animation_player.play("idle")
 
 @onready var approve_stamp = get_node("Approve")
 @onready var approve_stamp_initial_pos = approve_stamp.global_position
@@ -362,12 +427,19 @@ func approve_npc() -> void:
 	await (await give_items_back()).finished
 	approve_stamp.block = false
 	
-	if Utils.DENIAL_REASONS["explosive"] in current_npc_information["errors"]:
-		day_handler.money -= 75
-		var finished = await _act_terrorist()
-		await finished
-		prompt_message(tr("mistake.fatal") % [", ".join(current_npc_information["errors"])])
-		return
+	if (Utils.DENIAL_REASONS["explosive1"] in current_npc_information["errors"]) or (Utils.DENIAL_REASONS["explosive2"] in current_npc_information["errors"]):
+		if not insurance:
+			day_handler.money -= 75
+			var finished = await _act_terrorist()
+			await finished
+			var localized_errors = []
+			for error in current_npc_information["errors"]:
+				localized_errors.append(tr(error))
+			prompt_message(tr("mistake.fatal") % [", ".join(localized_errors)])
+			return
+		else:
+			insurance = false
+			prompt_message(tr("mistake.insurance"))
 	
 	tween = get_tree().create_tween()
 	tween.tween_property(current_npc, "progress_ratio", 1, 4)
@@ -406,7 +478,7 @@ func deny_npc() -> void:
 	tween.tween_property(deny_stamp.get_node("Model"), "global_position", deny_stamp_initial_pos, 0.4)
 	
 	var mismatches = []
-	if day_handler.day > 6:
+	if day_handler.day > 3:
 		# reason for denial ticket
 		var ticket = REASON_FOR_DENIAL_SCENE.instantiate()
 		get_parent().add_child(ticket)
@@ -438,6 +510,7 @@ func deny_npc() -> void:
 		print("Wrong!")
 		prompt_message("You made a mistake. Mismatched denial reasons, %s are missing." % [", ".join(mismatches)])
 		day_handler.money -= wrong_fare
+		return
 	
 	if len(current_npc_information["errors"]) > 0:
 		print("Correct")
@@ -486,12 +559,25 @@ func _on_day_day_started() -> void:
 			true
 		)
 		
+		Utils.SHOWING_REASONS.set(
+			Utils.DENIAL_REASONS["fake-kingdom"],
+			Utils.DENIAL_REASONS["fake-kingdom"]
+		)
+		Utils.SHOWING_REASONS.set(
+			Utils.DENIAL_REASONS["illegal-content"],
+			Utils.DENIAL_REASONS["illegal-content"]
+		)
 		
 		if day_handler.day == 0:
 			do_day_0()
 	if day_handler.day >= 1:
 		var idx = rulebook_tab.get_tab_idx_from_control(rulebook_tab.get_node("Weight Restrictions"))
 		rulebook_tab.set_tab_hidden(idx, false)
+		
+		Utils.SHOWING_REASONS.set(
+			Utils.DENIAL_REASONS["illegal-weight"],
+			Utils.DENIAL_REASONS["illegal-weight"]
+		)
 		
 		scale_object.visible = true
 		bucket_point.position = Vector3(-0.981, 0.954, -0.393)
@@ -512,11 +598,26 @@ func _on_day_day_started() -> void:
 				prompt_message.bind(tr(messages.messages["day2"].text))
 			)
 	
+	if day_handler.day == 4:
+		get_tree().create_timer(2).timeout.connect(
+			prompt_message.bind(tr(messages.messages["day4"].text))
+		)
+	
 	if day_handler.day >= 5:
 		rulebook_tab.set_tab_hidden(
 			rulebook_tab.get_tab_idx_from_control(rulebook_tab.get_node("Explosives")), 
 			false
 		)
+		
+		Utils.SHOWING_REASONS.set(
+			Utils.DENIAL_REASONS["explosive1"],
+			Utils.DENIAL_REASONS["explosive1"]
+		)
+		Utils.SHOWING_REASONS.set(
+			Utils.DENIAL_REASONS["explosive2"],
+			Utils.DENIAL_REASONS["explosive2"]
+		)
+		
 		get_node("MagicWand").visible = true
 		if day_handler.day == 5:
 			get_tree().create_timer(2).timeout.connect(
@@ -530,6 +631,7 @@ func _on_day_day_started() -> void:
 			get_tree().create_timer(2).timeout.connect(
 				prompt_message.bind(tr(messages.messages["day6"].text))
 			)
+			
 	
 	if current_npc:
 		current_npc.queue_free()

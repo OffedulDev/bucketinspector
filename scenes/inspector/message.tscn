@@ -31,5 +31,6 @@ size_flags_vertical = 3
 bbcode_enabled = true
 
 [node name="Continue" type="Button" parent="MarginContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 text = "CONTINUE"
