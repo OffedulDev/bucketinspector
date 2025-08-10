@@ -24,6 +24,8 @@ func _light_cup() -> void:
 	lighted = true
 	fire_particles.visible = true
 	inspector._play_sfx(LIGHT_CUP_SFX)
+	light_label.visible = false
+	test_label.visible = true
 
 func _use_cup() -> void:
 	inspector._play_sfx(MAGIC_CUP_SFX)

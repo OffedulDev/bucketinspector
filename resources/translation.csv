@@ -154,13 +154,11 @@ Questo gioco è stato creato per la [b][color=green]Jame Gam #52[/color][/b], il
 rulebook.explosives,"[font_size=32]Bombs[/font_size]
 Outsiders will also try to hide [b]explosives inside the bucket[/b], it is unknown when they [i]could go off[/i] so you have to detect them and deny the outsider.
 To detect bombs please follow these instructions.
-[hr][/hr]
 The bucket has a bomb if
 - [b]the bucket bubbles [color=yellow]yellow[/color][b] and has [b]both[/b] a [color=pink]pink[/color] and [color=green]green[/color] sticker.
 - [b]the bucket bubbles [color=red]red[/color] and it has [b]3 stickers[/b] or less and also [i]weights[/i] less than [i]50st[/i]","[font_size=32]Bombe[/font_size]
 Gli stranieri cercheranno di nascondere [b]esplosivi all'interno del secchio[/b]; non si sa quando [i]potrebbero esplodere[/i], quindi devi rilevarli e negare l'accesso all'esterno.
 Per rilevare le bombe, segui queste istruzioni.
-[hr][/hr]
 Ci sono due tipi di bombe, [b]entrambe devono essere negate[/b], ma devi scegliere quella corretta quando compili la [i]motivazione del rifiuto[/i].
 È una [color=teal]bomba di tipo 1[/color] se [b]il secchio fa bolle [color=yellow]gialle[/color][/b] e ha [b]sia[/b] un adesivo [color=pink]rosa[/color] che [color=green]verde[/color].
 È una [color=teal]bomba di tipo 2[/color] se [b]il secchio fa bolle [color=red]rosse[/color][/b] e ha [b]3 adesivi[/b] o meno e [i]pesa[/i] anche meno di [i]50st[/i]."
@@ -174,3 +172,11 @@ reasons.explosive2,Type 2 explosive,Bomba di titpo 2
 day_4_message,"[font_size=32]Be aware![/font_size]
 Hey Inspector! Sorry to bother you again but something really important just came to my ears. Due to a new wave of [b]bad press[/b] about the border's [color=red]inhumane treatment[/color] towards innocent travelers, we are now required to provide a [color=yellow]reason[/color] for every denied entry.","[font_size=32]Attenzione![/font_size]
 Ehi Ispettore! Mi dispiace disturbarti di nuovo, ma mi è appena giunta voce di una cosa davvero importante. A causa di una nuova ondata di [b]cattiva pubblicità[/b] sul [color=red]trattamento disumano[/color] riservato ai viaggiatori innocenti al confine, ora ci è richiesto di fornire una [color=yellow]motivazione[/color] per ogni ingresso negato."
+day_3_message,"[font_size=32]Quota requirments[/font_size]
+Hello inspector, starting today you will be required to fulfill an increasing [color=teal]daily quota[/color], if for any reason
+you [color=yellow]fail to fulfill the quota[/color] you will be given [color=red]a strike[/color]. Upon reaching [b]3 strikes[/b] you 
+will be terminated. ","[font_size=32]Requisiti di quota[/font_size]
+Salve ispettore, a partire da oggi le verrà richiesto di rispettare una [color=teal]quota giornaliera[/color] sempre maggiore. Se per qualsiasi motivo [color=yellow]non dovesse rispettare la quota[/color], le verrà dato [color=red]un richiamo[/color]. Al raggiungimento di [b]3 richiami[/b] verrà licenziato."
+strikes,strikes,ammonizioni
+game_over.strikes,"Game over! You got the max amount of strikes, try again!","Game over! Hai raggiunto il numero massimo di ammonizioni, riprova!"
+striked,You have received a strike because you failed to meet your daily quota. You have %s strikes out of 3.,Hai ricevuto un richiamo perché non sei riuscito a rispettare la tua quota giornaliera. Hai %s ammonizioni su 3.

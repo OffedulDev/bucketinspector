@@ -412,7 +412,7 @@ modulate = Color(1, 1, 1, 0)
 [node name="SubTitleLabel" parent="MenuContainer/SubTitleMargin/SubTitleContainer" index="0"]
 offset_top = 6.02
 offset_bottom = 40.02
-text = "A game totally not inspired by Papers, Please!"
+text = "A game inspired to the epic Papers, please game"
 label_settings = SubResource("LabelSettings_6xh1d")
 
 [node name="MenuButtonsContainer" parent="MenuContainer/MenuButtonsMargin" index="0"]
@@ -428,6 +428,7 @@ layout_mode = 2
 text = "Continue"
 
 [node name="Language" type="VBoxContainer" parent="." index="10"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.0173611

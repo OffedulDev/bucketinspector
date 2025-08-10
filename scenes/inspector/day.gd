@@ -3,6 +3,7 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 extends Control
 
+const MAIN_MENU_SCENE = "res://scenes/menus/main_menu/main_menu_with_animations.tscn"
 const CASH_SFX = preload("res://scenes/inspector/cash.mp3")
 
 @onready var day_label: Label = get_node("Day")
@@ -23,9 +24,9 @@ func format_time(decimal_hours: float) -> String:
 
 var money = 60:
 	set(value):
+		today_earnings += (money-value)
 		money = value
 		topbar_balance.text = "€" + str(value)
-		today_earnings += value
 		inspector._play_sfx(CASH_SFX, -5)
 
 var current_time = 0
@@ -45,9 +46,30 @@ func _process(delta: float) -> void:
 	if get_parent().get_node("Inspector").current_npc == null:
 		_free.emit()
 
-var day = 4
+var day = 0
 var today_earnings = 0
 var waiting = false
+
+@onready var quota_label = get_node("Quota")
+@onready var strikes_label = quota_label.get_node("Strikes")
+var strikes = 0:
+	set(value):
+		strikes = value
+		strikes_label.text = str(value) + " " + tr("strikes")
+var daily_quota = 0:
+	set(value):
+		daily_quota = value
+		quota_label.text = "Quota: " + str(quota) + "/" + str(daily_quota) 
+var quota = 0:
+	set(value):
+		quota = value
+		quota_label.text = "Quota: " + str(value) + "/" + str(daily_quota) 
+var quota_activated = false
+
+func activate_quota() -> void:
+	quota_activated = true
+	quota_label.visible = true
+	
 signal day_started
 
 func update_blocker() -> void:
@@ -76,6 +98,17 @@ func reset_day(bypass: bool = false) -> void:
 	var tween = get_tree().create_tween()
 	tween.tween_property(blocker_panel, "modulate", Color(1, 1, 1, 1), 0.5)
 	await tween.finished
+	
+	if quota_activated:
+		if quota < daily_quota:
+			if strikes == 3:
+				await inspector.prompt_message(tr("game_over.strikes"))
+				get_tree().paused = false
+				SceneLoader.load_scene(MAIN_MENU_SCENE)
+			else:
+				await inspector.prompt_message(tr("striked"))
+				strikes += 1
+	
 	await _accepted
 	
 	day += 1
@@ -83,6 +116,8 @@ func reset_day(bypass: bool = false) -> void:
 	day_label.text = tr("day_label") % [str(day)]
 	day_timer.start()
 	day_started.emit()
+	daily_quota = randi_range(day-2, day+1)
+	quota = 0
 	
 	tween = get_tree().create_tween()
 	tween.tween_property(blocker_panel, "modulate", Color(1, 1, 1, 0), 0.5)
@@ -106,4 +141,5 @@ func _ready() -> void:
 	day_timer.timeout.connect(reset_day)
 	day_label.text = tr("day_label") % [str(day)]
 	topbar_balance.text = "€" + str(money)
+	daily_quota = randi_range(int(day/2), day+1)
 	

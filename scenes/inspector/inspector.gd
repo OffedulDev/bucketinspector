@@ -128,8 +128,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			if current_npc.progress_ratio == 0.5 and not moved_items:
 				move_items_to_stand()
 	elif event.is_action_pressed("rulebook"):
-		rulebook.visible = not rulebook.visible
-		Engine.time_scale = 0.5 if rulebook.visible else 1
+		if not terrorist_spawned:
+			rulebook.visible = not rulebook.visible
+			Engine.time_scale = 0.5 if rulebook.visible else 1
 	elif event.is_action_pressed("look_left"):
 		if looking == 0:
 			if day_handler.day > 1:
@@ -439,6 +440,7 @@ func approve_npc() -> void:
 			return
 		else:
 			insurance = false
+			day_handler.get_node("Insurance").visible = false
 			prompt_message(tr("mistake.insurance"))
 	
 	tween = get_tree().create_tween()
@@ -451,6 +453,7 @@ func approve_npc() -> void:
 	
 	if len(current_npc_information["errors"]) == 0:
 		print("Correct")
+		day_handler.quota += 1
 		day_handler.money += correct_fare
 	else:
 		print("Wrong!")
@@ -502,19 +505,23 @@ func deny_npc() -> void:
 	animation_player.play("walk")
 	
 	await tween.finished
+	get_node("ExplosiveHintTimer").stop()
 	current_npc.queue_free()
 	current_npc = null
-	get_node("ExplosiveHintTimer").stop()
 
 	if len(mismatches) > 0:
 		print("Wrong!")
-		prompt_message("You made a mistake. Mismatched denial reasons, %s are missing." % [", ".join(mismatches)])
+		var localized_mismatches = []
+		for error in mismatches:
+			localized_mismatches.append(tr(error))
+		prompt_message("You made a mistake. Mismatched denial reasons, %s are missing." % [", ".join(localized_mismatches)])
 		day_handler.money -= wrong_fare
 		return
 	
 	if len(current_npc_information["errors"]) > 0:
 		print("Correct")
 		print(current_npc_information["errors"])
+		day_handler.quota += 1
 		day_handler.money += correct_fare
 	else:
 		print("Wrong!")
@@ -598,6 +605,14 @@ func _on_day_day_started() -> void:
 				prompt_message.bind(tr(messages.messages["day2"].text))
 			)
 	
+	if day_handler.day >= 3:
+		day_handler.activate_quota()
+		
+		if day_handler.day == 3:
+			get_tree().create_timer(2).timeout.connect(
+				prompt_message.bind(tr(messages.messages["day3"].text))
+			)
+	
 	if day_handler.day == 4:
 		get_tree().create_timer(2).timeout.connect(
 			prompt_message.bind(tr(messages.messages["day4"].text))
@@ -672,20 +687,31 @@ func _on_npc_wait_timeout() -> void:
 	if day_handler.current_time > 15 and day_handler.day == 0:
 		day_handler.day_timer.paused = true
 		terrorist_spawned = true
+		
+		rulebook.visible = false
+		Engine.time_scale = 1
+		
 		spawn_npc()
 	elif day_handler.current_time > 13 and day_handler.day == 4:
 		day_handler.day_timer.paused = true
 		terrorist_spawned = true
+		
+		rulebook.visible = false
+		Engine.time_scale = 1
+		
 		spawn_npc()
 	else:
 		spawn_npc()
 
 func _on_explosive_hint_timer_timeout() -> void:
 	if current_npc and current_npc_information:
-		var bucket = current_npc.get_node("Npc/Bucket")
-		var particles = bucket.get_node("GPUParticles3D")
-		particles.amount = 10
-		particles.emitting = true
-		await get_tree().create_timer(0.6).timeout
-		particles.emitting = false
-		particles.amount = 83
+		if current_npc.progress_ratio == 0.5:
+			var bucket = current_npc.get_node("Npc/Bucket")
+			if  is_instance_valid(bucket):
+				var particles = bucket.get_node("GPUParticles3D")
+				if is_instance_valid(particles):
+					particles.amount = 10
+					particles.emitting = true
+					await get_tree().create_timer(0.6).timeout
+					particles.emitting = false
+					particles.amount = 83

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Messages" load_steps=10 format=3 uid="uid://dfsw4gc24wwfe"]
+[gd_resource type="Resource" script_class="Messages" load_steps=11 format=3 uid="uid://dfsw4gc24wwfe"]
 
 [ext_resource type="Script" uid="uid://d0gtw3p0bx0hg" path="res://scenes/inspector/message_resource.gd" id="1_hmcm0"]
 [ext_resource type="Script" uid="uid://c12clcn0drf35" path="res://scenes/inspector/messages_resource.gd" id="2_mq8qr"]
@@ -11,6 +11,11 @@ metadata/_custom_type_script = "uid://d0gtw3p0bx0hg"
 [sub_resource type="Resource" id="Resource_w3kyl"]
 script = ExtResource("1_hmcm0")
 text = "day_2_message"
+metadata/_custom_type_script = "uid://d0gtw3p0bx0hg"
+
+[sub_resource type="Resource" id="Resource_hl07x"]
+script = ExtResource("1_hmcm0")
+text = "day_4_message"
 metadata/_custom_type_script = "uid://d0gtw3p0bx0hg"
 
 [sub_resource type="Resource" id="Resource_sjcb8"]
@@ -33,9 +38,9 @@ script = ExtResource("1_hmcm0")
 text = "warning_message"
 metadata/_custom_type_script = "uid://d0gtw3p0bx0hg"
 
-[sub_resource type="Resource" id="Resource_hl07x"]
+[sub_resource type="Resource" id="Resource_si4kk"]
 script = ExtResource("1_hmcm0")
-text = "day_4_message"
+text = "day_3_message"
 metadata/_custom_type_script = "uid://d0gtw3p0bx0hg"
 
 [resource]
@@ -43,6 +48,7 @@ script = ExtResource("2_mq8qr")
 messages = Dictionary[String, ExtResource("1_hmcm0")]({
 "day1": SubResource("Resource_pg2ks"),
 "day2": SubResource("Resource_w3kyl"),
+"day3": SubResource("Resource_si4kk"),
 "day4": SubResource("Resource_hl07x"),
 "day5": SubResource("Resource_sjcb8"),
 "day6": SubResource("Resource_npwgj"),

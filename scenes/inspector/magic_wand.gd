@@ -23,12 +23,11 @@ func _mouse_enter() -> void:
 	tween.tween_property(model, "position", Vector3(0, 0.1, 0), 0.2)
 
 func use_wand():
-	if inspector.current_npc == null: return
-	if inspector.moved_items == false: return
 	if day_handler.money > 30:
 		day_handler.money -= 30
 		inspector._play_sfx(MAGIC_SFX)
 		inspector.insurance = true
+		day_handler.get_node("Insurance").visible = true
 		inspector.prompt_message(tr("magic_wand.used"))
 
 func _input_event(camera: Camera3D, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
